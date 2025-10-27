@@ -25,7 +25,6 @@ const Header = () => {
             <div className="header-welcome-message">
                 <h1>{getSaludo()}</h1>
             </div>
-            {/* Opcional: Aquí podrías poner un botón de Cerrar Sesión */}
         </header>
     );
 };

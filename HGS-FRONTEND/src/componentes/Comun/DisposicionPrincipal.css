@@ -1,0 +1,20 @@
+/* 1. Contenedor principal usando Grid para 2 columnas */
+.layout-container {
+    display: grid;
+    grid-template-columns: 250px 1fr; 
+    height: 100vh; 
+}
+
+/* 2. Envoltura del contenido principal (Header + Main Area) */
+.main-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto; 
+    background-color: #f8f8f8; 
+}
+
+/* 3. Área donde se renderiza el contenido de la ruta (el formulario) */
+.main-content-area {
+    padding: 20px;
+    flex-grow: 1; 
+}
