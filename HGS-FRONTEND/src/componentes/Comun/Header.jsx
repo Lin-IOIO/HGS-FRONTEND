@@ -1,6 +1,6 @@
 import React from 'react';
-import { useAuth } from '../../context/AuthContext'; // Importar el hook de contexto
-import './header.css'; // Asume que tienes un archivo CSS para estilos
+import { useAuth } from '../../contexto/conAutenticacion'; // Importar el hook de contexto
+import './Header.css'; // Asume que tienes un archivo CSS para estilos
 
 const Header = () => {
     // Obtener la información del usuario del contexto

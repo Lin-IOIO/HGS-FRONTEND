@@ -1,23 +1,18 @@
-import Encabezado from './Encabezado';
-import BarraLateral from './BarraLateral';
-// import './DisposicionPrincipal.css'; // Estilos para posicionar el layout
+import Encabezado from './Header';
+import BarraLateral from './sideBar';
+import './DisposicionPrincipal.css'; 
 
 const DisposicionPrincipal = ({ children }) => {
     return (
-        <div className="layout-container">
-            {/* La barra lateral azul a la izquierda */}
-            <BarraLateral />
-            
-            <div className="main-content-wrapper">
-                {/* El encabezado "Hola, Secretario/a..." */}
-                <Encabezado />
-                
-                {/* El contenido central (el "Nuevo Usuario" que ignoramos por ahora) */}
-                <main className="main-content-area">
-                    {children} 
-                </main>
-            </div>
-        </div>
+    <div className="layout-container">
+    <BarraLateral />
+    <div className="main-content-wrapper">
+        <Encabezado />
+        <main className="main-content-area">
+            {children} 
+        </main>
+    </div>
+</div>
     );
 };
 

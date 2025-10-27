@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../contexto/conAutenticacion';
 // import { Navigate } from 'react-router-dom'; // No lo usaremos por ahora, solo devolvemos los hijos.
 
 const RutaProtegida = ({ children }) => {

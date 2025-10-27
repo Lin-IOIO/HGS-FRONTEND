@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import './App.css'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-
-import { AuthProvider } from './contexto/conAutenticacions';
+import { AuthProvider } from './contexto/conAutenticacion';
 import RutaProtegida from './componentes/Enrutamiento/RutaProtegida';
 import DisposicionPrincipal from './componentes/Comun/DisposicionPrincipal';
 

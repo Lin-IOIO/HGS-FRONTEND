@@ -1,7 +1,7 @@
 import React from 'react';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../contexto/conAutenticacion';
 import { NavLink } from 'react-router-dom'; 
-import './BarraLateral.css';
+import './sideBar.css';
 
 // Estructura de navegación basada en la imagen (para el rol de Admin/Secretario)
 const navItems = [
