@@ -1,0 +1,37 @@
+/* src/components/ui/Input.css (Estilos para Input y Selector) */
+
+.ui-form-group {
+    margin-bottom: 25px;
+}
+
+.ui-label {
+    display: block;
+    font-size: 0.9em;
+    color: #555;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.ui-input-field {
+    width: 100%;
+    padding: 10px 12px;
+    border: none;
+    background-color: #ededed; /* Fondo gris claro */
+    font-size: 1em;
+    box-sizing: border-box; /* Crucial para que el padding no cambie el ancho */
+    border-bottom: 2px solid transparent; /* Línea de base transparente */
+    transition: border-bottom-color 0.3s ease;
+}
+
+/* Estilo que simula la línea azul que aparece al hacer click/foco */
+.ui-input-field:focus {
+    outline: none; /* Quitar el contorno por defecto del navegador */
+    border-bottom-color: #4a86e8; /* Azul visible al enfocar */
+    background-color: #fff; /* Opcional: fondo blanco al enfocar */
+}
+
+/* Estilo específico para el selector (para asegurar que se vea como input) */
+.ui-selector-field {
+    height: 40px; /* Asegurar altura consistente */
+    cursor: pointer;
+}

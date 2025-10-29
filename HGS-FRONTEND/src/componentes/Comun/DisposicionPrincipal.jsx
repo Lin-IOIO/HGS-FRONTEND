@@ -1,5 +1,5 @@
 import Encabezado from './Header';
-import BarraLateral from './sideBar';
+import BarraLateral from './SideBar';
 import './DisposicionPrincipal.css'; 
 
 const DisposicionPrincipal = ({ children }) => {

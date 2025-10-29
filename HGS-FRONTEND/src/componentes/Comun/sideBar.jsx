@@ -1,13 +1,13 @@
 import React from 'react';
 import { useAuth } from '../../contexto/conAutenticacion';
 import { NavLink } from 'react-router-dom'; 
-import './sideBar.css';
+import './SideBar.css';
 
 // Estructura de navegación basada en la imagen (para el rol de Admin/Secretario)
 const navItems = [
-    { name: 'Inicio', path: '/inicio', icon: 'fas fa-home' },
-    { name: 'Cursos', path: '/cursos', icon: 'fas fa-graduation-cap' },
-    { name: 'Usuarios', path: '/usuarios', icon: 'fas fa-users' }, // Para GestionUsuarios
+    { name: 'Inicio', path: '/admin/inicio', icon: 'fas fa-home' },
+    { name: 'Cursos', path: '/admin/cursos', icon: 'fas fa-graduation-cap' },
+    { name: 'Usuarios', path: '/admin/usuarios', icon: 'fas fa-users' },, // Para GestionUsuarios
 ];
 
 const SideBar = () => {

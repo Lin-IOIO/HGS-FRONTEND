@@ -1,0 +1,26 @@
+.gestion-usuarios-container {
+    max-width: 800px;
+    padding: 20px 40px; /* Margen para centrar el formulario dentro del área principal */
+}
+
+.gestion-usuarios-container h1 {
+    font-size: 2em;
+    font-weight: 500;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+/* Distribución de DNI y Tipo de Usuario en la misma fila */
+.form-row-dni-tipo {
+    display: grid;
+    /* DNI (más ancho) 2/3, Tipo Usuario (más angosto) 1/3 */
+    grid-template-columns: 2fr 1fr; 
+    gap: 30px; 
+    margin-bottom: 25px;
+}
+
+/* Posición del botón Guardar */
+.form-action-area {
+    margin-top: 40px;
+    text-align: center;
+}
