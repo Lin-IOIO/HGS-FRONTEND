@@ -1,7 +1,7 @@
 import React from 'react';
 import GestionUsuarios from './GestionUsuarios';
-// import ConfiguracionCursos from './ConfiguracionCursos'; 
-// import VistaInicioAdmin from './VistaInicioAdmin';
+import InicioCursos from './InicioCursos';
+import VistaInicio from './VistaInicio';
 
 // Función temporal para simular la acción de guardar un nuevo usuario
 const handleCrearUsuario = (datosUsuario) => {
@@ -9,12 +9,18 @@ const handleCrearUsuario = (datosUsuario) => {
     alert(`Nuevo usuario (Tipo: ${datosUsuario.tipoUsuario}) listo para ser enviado al servidor.`);
     // Aquí iría la llamada a tu API para crear el usuario
 };
+const handleCrearCurso = (datosCurso) => {
+    console.log('📦 Creando nuevo curso:', datosCurso);
+    alert(`Curso ${datosCurso.nombre} (${datosCurso.anio} ${datosCurso.division}) registrado.`);
+    // Aquí iría la lógica de la API
+};
+
 
 /**
  * Componente TableroAdministrador
  * Recibe 'vista' como prop para decidir qué contenido renderizar.
  */
-const TableroAdministrador = ({ vista }) => {
+const TableroAdmin = ({ vista }) => {
     
     // Función para renderizar el contenido basado en la URL (la prop 'vista')
     const renderContent = () => {
@@ -24,21 +30,11 @@ const TableroAdministrador = ({ vista }) => {
                 return <GestionUsuarios alEnviarUsuario={handleCrearUsuario} />;
             
             case 'cursos':
-                // TO DO: Implementar el formulario de ConfiguraciónCursos
-                return (
-                    <div style={{ padding: '20px' }}>
-                        <h1>Configuración de Cursos</h1>
-                        <p>Módulo en desarrollo para la Etapa 1: crear cursos y asignar materias.</p>
-                    </div>
-                );
+                // TO DO: Implementar el formulario de ConfiguraciónCursosñ
+                return <InicioCursos alCrearCurso={handleCrearCurso} />;
                 
             case 'inicio':
-                return (
-                    <div style={{ padding: '20px' }}>
-                        <h1>Bienvenido al Panel de Secretaría</h1>
-                        <p>Selecciona una opción del menú lateral para comenzar a gestionar el sistema.</p>
-                    </div>
-                );
+                return <VistaInicio />
 
             default:
                 // Si la ruta no coincide, redirigimos al inicio
@@ -48,10 +44,9 @@ const TableroAdministrador = ({ vista }) => {
 
     return (
         <div className="tablero-admin-wrapper">
-            {/* Aquí se renderiza la vista dinámica */}
             {renderContent()}
         </div>
     );
 };
 
-export default TableroAdministrador;
+export default TableroAdmin;

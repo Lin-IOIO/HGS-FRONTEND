@@ -1,17 +1,17 @@
-/* src/components/ui/Boton.css */
-
 .ui-boton-principal {
-    background-color: #557291; /* Azul grisáceo del botón "Guardar" */
+   background-color: #38739C;
     color: white;
     border: none;
-    padding: 10px 40px;
-    font-size: 1.1em;
+    padding: 15px 30px;
+    font-size: 1em;
+    font-weight: bold;
+    text-align: center;
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s;
-    min-width: 150px;
+    min-width: 120px; /* Ajustar ancho mínimo */
 }
 
 .ui-boton-principal:hover {
-    background-color: #435970;
+    background-color: #2e5f83; /* Un azul ligeramente más oscuro al pasar el ratón */
 }

@@ -1,0 +1,25 @@
+.crear-curso-container {
+    max-width: 600px; /* Más pequeño ya que solo tiene dos selectores */
+    margin: 40px auto;
+    
+    padding: 0;
+}
+
+.titulo-formulario {
+    font-size: 2.5em;
+    font-weight: 700;
+    text-align: left;
+    margin-bottom: 50px;
+}
+
+.form-row-anio-division {
+   display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    margin-bottom: 40px;
+}
+
+.form-action-area-curso {
+    margin-top: 60px;
+    text-align: center;
+}

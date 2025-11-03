@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import Input from '../../components/ui/Input';
-import Selector from '../../components/ui/Selector';
-import Boton from '../../components/ui/Boton';
+import Input from '../../componentes/UI/Input.jsx';
+import Selector from '../../componentes/UI/Selector.jsx';
+import Boton from '../../componentes/UI/Boton.jsx';
 import './GestionUsuarios.css'; 
 
 const rolesDisponibles = [

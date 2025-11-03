@@ -1,37 +1,36 @@
-/* src/components/ui/Input.css (Estilos para Input y Selector) */
-
 .ui-form-group {
-    margin-bottom: 25px;
+    margin-bottom: 25px; /* Espacio entre los campos */
 }
 
 .ui-label {
-    display: block;
+    display: flex;
     font-size: 0.9em;
-    color: #555;
-    margin-bottom: 5px;
-    font-weight: 600;
+    color: #38739C;
+    margin-bottom: 8px;
+    font-weight: bold; /* Hacer la etiqueta más negrita */
 }
 
 .ui-input-field {
     width: 100%;
-    padding: 10px 12px;
+    padding: 10px 15px; /* Padding solo vertical, sin padding horizontal interno */
     border: none;
-    background-color: #ededed; /* Fondo gris claro */
+    background-color: #f5f5f5; /* Fondo gris claro */
     font-size: 1em;
-    box-sizing: border-box; /* Crucial para que el padding no cambie el ancho */
-    border-bottom: 2px solid transparent; /* Línea de base transparente */
-    transition: border-bottom-color 0.3s ease;
+    box-sizing: border-box; 
+    border-bottom: 2px solid #ccc; /* Línea gris inferior por defecto */
+    transition: border-bottom-color 0.3s ease, background-color 0.3s ease;
 }
 
 /* Estilo que simula la línea azul que aparece al hacer click/foco */
 .ui-input-field:focus {
-    outline: none; /* Quitar el contorno por defecto del navegador */
+    outline: none; 
     border-bottom-color: #4a86e8; /* Azul visible al enfocar */
-    background-color: #fff; /* Opcional: fondo blanco al enfocar */
+    background-color: #ffffff; /* Fondo blanco al enfocar */
 }
 
 /* Estilo específico para el selector (para asegurar que se vea como input) */
 .ui-selector-field {
-    height: 40px; /* Asegurar altura consistente */
+    height: 40px; /* Altura consistente */
     cursor: pointer;
+    padding: 10px 5px; /* Ajustar padding para el texto del selector */
 }

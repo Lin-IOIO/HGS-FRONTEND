@@ -1,0 +1,76 @@
+.inicio-cursos-container {
+    padding: 20px; /* Asegura el padding interno dentro del fondo blanco del tablero */
+    max-width: 1200px; /* Define el ancho máximo que ocupará el contenido */
+    margin: 0 auto;
+}
+
+.inicio-cursos-header {
+    display: flex;
+    justify-content: space-between; /* Mantiene Título a izquierda y Botón a derecha */
+    align-items: center;
+    margin-bottom: 40px;
+}
+.titulo-cursos-existentes {
+    font-size: 1.8em; /* Ajusta el tamaño para que sea similar a la imagen */
+    font-weight: 600;
+    color: #cc3333; /* Rojo sutil, como en la imagen */
+}
+
+.btn-nuevo-curso {
+    /* Aquí puedes reutilizar la clase del Boton.css pero agregar estilos para el icono si es necesario */
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #4a86e8; /* Azul más fuerte */
+}
+
+/* src/pages/admin/VistaInicioCursos.css */
+.cursos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
+    gap: 25px;
+}
+
+.curso-card {
+    border-radius: 2px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+    height: 170px; /* Altura fija para la tarjeta */
+    width: 250px;
+    position: relative; /* ¡IMPORTANTE! Establece el contexto para el posicionamiento absoluto */
+    display: flex; /* Usamos flexbox para empujar el footer hacia abajo */
+    flex-direction: column;
+}
+
+.curso-card:hover {
+    transform: translateY(-3px);
+}
+
+/* NUEVOS ESTILOS para el nombre del curso */
+.card-curso-nombre-wrapper {
+    position: absolute; /* Posicionamiento absoluto dentro de curso-card */
+    bottom: 50px; /* Ajusta la distancia desde abajo (para no solapar el footer) */
+    left: 15px; /* Ajusta la distancia desde la izquierda */
+    padding: 5px; /* Pequeño padding para el texto si es necesario */
+    /*z-index: 1;*/ /* Asegura que esté sobre otros elementos si los hubiera */
+}
+
+.curso-nombre {
+    font-size: 1.5em;
+    font-weight: 700;
+    color: white; /* Color de texto blanco para que contraste con el fondo de color */
+}
+
+.card-footer {
+    background-color: white;
+    padding: 3px 15px;
+    height: 28%;
+    color: #707070;
+    font-size: 0.9em;
+    text-align: left;
+    /* Usamos auto-margin o flex-grow para empujar el footer a la parte inferior */
+    margin-top: auto; 
+    width: 100%; /* Asegura que ocupe todo el ancho */
+    box-sizing: border-box; /* Incluye padding en el ancho */
+}

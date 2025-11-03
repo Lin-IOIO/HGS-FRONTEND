@@ -5,6 +5,7 @@ import { AuthProvider, useAuth } from './contexto/conAutenticacion';
 import RutaProtegida from './componentes/Enrutamiento/RutaProtegida';
 import DisposicionPrincipal from './componentes/Comun/DisposicionPrincipal';
 import TableroAdmin from './paginas/Admin/TableroAdmin';
+import GestionMaterias from './paginas/Admin/GestionMaterias';
 
 // Componente temporal para ver el layout
 const RutasRolEspecificas = () => {
@@ -16,10 +17,12 @@ const RutasRolEspecificas = () => {
     if (user.rol === 'Administrador' || user.rol === 'Secretario') {
         return (
             <Routes>
-                {/* <Route path="inicio" element={<TableroAdministrador vista="inicio" />} />
-              
-                <Route path="cursos" element={<TableroAdministrador vista="cursos" />} /> */}
-                {/* 3. Ruta para la gestión de Usuarios (¡La que necesitamos!) */}
+                <Route path="inicio" element={<TableroAdmin vista="inicio" />} />
+
+                <Route path="cursos" element={<TableroAdmin vista="cursos" />} />
+
+                <Route path="cursos/:idCurso" element={<GestionMaterias />} />
+
                 <Route path="usuarios" element={<TableroAdmin vista="usuarios" />} />
             
                 <Route path="/" element={<Navigate to="inicio" replace />} />
@@ -35,7 +38,7 @@ const App = () => {
                 <Routes>
                     {/* Esta ruta será la de prueba */}
                     <Route 
-                        path="/*"
+                        path="/admin/*"
                         element={
                             <RutaProtegida>
                                 <DisposicionPrincipal>

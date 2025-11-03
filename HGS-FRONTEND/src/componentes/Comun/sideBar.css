@@ -27,6 +27,7 @@
 
 .sidebar-link:hover {
     background-color: #4a6279;
+    color: #59ace7;
 }
 
 .sidebar-link.active {

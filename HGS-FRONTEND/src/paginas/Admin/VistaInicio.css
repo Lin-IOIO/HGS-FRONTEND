@@ -1,0 +1,69 @@
+.admin-inicio-container {
+    padding: 30px; 
+    max-width: 1200px;
+}
+
+.admin-inicio-container h1 {
+    font-size: 2.5em;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.subtitulo-bienvenida {
+    color: #666;
+    font-size: 1.1em;
+    margin-bottom: 40px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 20px;
+}
+
+.resumen-dashboard h2 {
+    font-size: 1.8em;
+    font-weight: 500;
+    color: #246b7c; /* Color temático (azul) */
+    margin-bottom: 25px;
+}
+
+.dashboard-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+.info-card {
+    background-color: white;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+    border-left: 5px solid #246b7c; /* Detalle de color */
+}
+
+.info-card:hover {
+    transform: translateY(-5px);
+}
+
+.info-card h3 {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.info-card p {
+    font-size: 0.9em;
+    color: #777;
+    margin-bottom: 15px;
+}
+
+.card-dato {
+    display: block;
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #246b7c; /* Color principal */
+}
+
+/* Colores específicos para diferenciar las tarjetas (opcional) */
+.card-usuarios { border-left-color: #288b9c; }
+.card-cursos { border-left-color: #ee8d32; }
+.card-materias { border-left-color: #7abe2d; }
