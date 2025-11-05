@@ -13,9 +13,12 @@
 }
 
 .form-row-anio-division {
-   display: grid;
+    display: grid; 
     grid-template-columns: 1fr 1fr;
-    gap: 80px;
+    gap: 80px; 
+    width: 500px; 
+    margin: 0 auto; 
+    
     margin-bottom: 40px;
 }
 

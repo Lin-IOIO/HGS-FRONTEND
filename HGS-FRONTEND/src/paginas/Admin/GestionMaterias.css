@@ -25,7 +25,6 @@
     font-size: 1.5em;
     font-weight: 400; /* Fuente más ligera que el título principal */
     color: #555;
-    text-transform: lowercase; /* Opcional: para que se vea como en la imagen */
 }
 
 .btn-nueva-materia {
@@ -43,17 +42,16 @@
 }
 
 .materia-card {
-    background-color: white;
     border-radius: 6px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     overflow: hidden;
 }
 
 .materia-info-header {
-    /* El color se aplica con el estilo en línea (degradado) */
     padding: 15px 20px;
     color: white;
     font-weight: 600;
+    text-align: left;
 }
 
 .materia-nombre {
@@ -66,4 +64,5 @@
     background-color: white;
     color: #666;
     font-size: 0.9em;
+    text-align: left;
 }

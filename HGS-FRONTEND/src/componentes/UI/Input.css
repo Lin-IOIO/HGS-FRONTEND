@@ -24,7 +24,7 @@
 /* Estilo que simula la línea azul que aparece al hacer click/foco */
 .ui-input-field:focus {
     outline: none; 
-    border-bottom-color: #4a86e8; /* Azul visible al enfocar */
+    border-bottom-color: #387db6; /* Azul visible al enfocar */
     background-color: #ffffff; /* Fondo blanco al enfocar */
 }
 

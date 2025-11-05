@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Boton from '../../componentes/UI/Boton.jsx'; 
 import './GestionMaterias.css'; 
-// Importar FormularioNuevaMateria si ya lo tienes
-// import FormularioNuevaMateria from './FormularioNuevaMateria'; 
+import FormNuevaMateria from './FormNuevaMateria.jsx';
 
 // Datos simulados (como se ve en image_49877e.png)
 const materiasSimuladas = [
@@ -27,14 +26,14 @@ const GestionMaterias = () => {
     
     // Si estamos creando, mostramos el formulario
     if (isCreating) {
-        // Asumiendo que FormularioNuevaMateria existe
-        // return <FormularioNuevaMateria alGuardar={handleCrearMateria} alCancelar={() => setIsCreating(false)} />;
         return (
-            <div style={{ padding: '40px' }}>
-                <h2>Formulario para Nueva Materia en {nombreCurso} (TO DO)</h2>
-                <Boton onClick={() => setIsCreating(false)}>Cancelar</Boton>
+            <div className="gestion-materias-container">
+                <FormNuevaMateria 
+                    alGuardar={handleCrearMateria} 
+                    alCancelar={() => setIsCreating(false)} 
+                />
             </div>
-        )
+        );
     }
 
     return (
@@ -47,11 +46,11 @@ const GestionMaterias = () => {
             <section className="materias-listado-section">
                 <div className="materias-listado-header">
                     {/* Título 'materias asignadas:' */}
-                    <h2 className="materias-subtitulo">materias asignadas:</h2>
+                    <h2 className="materias-subtitulo">Materias Asignadas:</h2>
                     
                     {/* Botón '+ Nueva Materia' */}
                     <Boton onClick={() => setIsCreating(true)} className="btn-nueva-materia">
-                        <i className="fas fa-plus"></i> Nueva Materia
+                        <i className="fas fa-plus"></i> + Nueva Materia
                     </Boton>
                 </div>
 
@@ -59,7 +58,7 @@ const GestionMaterias = () => {
                     {materiasSimuladas.map(materia => (
                         <div key={materia.id} className="materia-card">
                             {/* Color de fondo degradado (simulado con style) */}
-                            <div className="materia-info-header" style={{ backgroundImage: `linear-gradient(to right, ${materia.color}, #ffffff00)` }}>
+                            <div className="materia-info-header" style={{ backgroundColor: materia.color }}>
                                 <span className="materia-nombre">{materia.nombre}</span>
                             </div>
                             {/* Información del profesor */}
