@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Boton from '../../componentes/UI/Boton.jsx'; 
 import './FormNuevaMateria.css'; 
+import Notificacion from '../../componentes/UI/Notificacion.jsx';
 
 // Datos simulados para los profesores (Docentes)
 const profesoresSimulados = [
@@ -22,6 +23,8 @@ const FormNuevaMateria = ({ alGuardar, alCancelar }) => {
     const [nombreMateria, setNombreMateria] = useState('');
     const [profesorAsignado, setProfesorAsignado] = useState('');
     const [busquedaProfesor, setBusquedaProfesor] = useState('');
+
+    const [notificacion, setNotificacion] = useState(null);
     
     // Lista filtrada de profesores basada en la búsqueda
     const profesoresFiltrados = profesoresSimulados.filter(profesor => 
@@ -30,10 +33,21 @@ const FormNuevaMateria = ({ alGuardar, alCancelar }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        
         if (nombreMateria && profesorAsignado) {
-            alGuardar({ nombreMateria, profesorAsignado });
+            setNotificacion({ 
+                mensaje: 'Materia creada y profesor asignado exitosamente.', 
+                tipo: 'exito' 
+            });
+            setTimeout(() => {
+                alGuardar({ nombreMateria, profesorAsignado });
+            }, 1000); 
+
         } else {
-            alert('Por favor, completa todos los campos.');
+            setNotificacion({ 
+                mensaje: 'Debe completar el nombre de la materia y asignar un profesor.', 
+                tipo: 'error' 
+            });
         }
     };
     
@@ -44,6 +58,14 @@ const FormNuevaMateria = ({ alGuardar, alCancelar }) => {
     }
 
     return (
+        <>
+        {notificacion && (
+                <Notificacion
+                    mensaje={notificacion.mensaje}
+                    tipo={notificacion.tipo}
+                    alCerrar={() => setNotificacion(null)} // Función para cerrar la notificación
+                />
+        )}
         <div className="nueva-materia-container">
             <h1 className="titulo-formulario-materia">Nueva Materia</h1>
             
@@ -97,11 +119,12 @@ const FormNuevaMateria = ({ alGuardar, alCancelar }) => {
 
                 {/* 3. BOTÓN GUARDAR */}
                 <div className="form-actions-materia">
-                    <Boton type="submit">Guardar</Boton>
-                    <Boton onClick={alCancelar} style={{marginLeft: '10px'}} variante="secundaria">Cancelar</Boton>
+                    <Boton type="submit" className='ui-boton-principal'>Guardar</Boton>
+                    <Boton onClick={alCancelar} style={{marginLeft: '10px'}} variante="secundaria" className='ui-boton-principal'>Cancelar</Boton>
                 </div>
             </form>
         </div>
+        </>
     );
 };
 

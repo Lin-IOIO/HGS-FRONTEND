@@ -4,10 +4,10 @@ import { createContext, useContext, useState } from 'react';
 const AuthContext = createContext();
 
 const initialUserData = {
-    rol: 'Administrador', // 'Administrador', 'Coordinador', 'Profesor'
+    rol: 'Coordinador', // 'Administrador', 'Coordinador', 'Profesor'
     nombre: 'José Román',
     apellido: 'Giaccomo',
-    titulo: 'Secretario/a'
+    titulo: 'Coordinador'
 };
 
 // 2. Crear el Proveedor (Provider)

@@ -36,7 +36,7 @@ const InicioCursos = ({ alCrearCurso }) => {
                 <h1 className="titulo-cursos-existentes">Cursos Existentes</h1>
                 <Boton 
                     onClick={() => setIsCreating(true)}
-                    className="btn-nuevo-curso"
+                    className="ui-boton-principal"
                 >
                     <i className="fas fa-plus"></i>+ Nuevo Curso 
                 </Boton>

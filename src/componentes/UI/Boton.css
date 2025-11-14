@@ -1,5 +1,5 @@
 .ui-boton-principal {
-   background-color: #38739C;
+    background-color: #38739C;
     color: white;
     border: none;
     padding: 15px 30px;
@@ -14,4 +14,22 @@
 
 .ui-boton-principal:hover {
     background-color: #2e5f83; /* Un azul ligeramente más oscuro al pasar el ratón */
+}
+
+.btn-agregar-plan {
+    background-color: white; 
+    color: #333;
+    padding: 8px 15px;
+    font-size: 0.9em;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.btn-agregar-plan:hover{
+    background-color: #ececec;
 }

@@ -49,7 +49,7 @@ const GestionMaterias = () => {
                     <h2 className="materias-subtitulo">Materias Asignadas:</h2>
                     
                     {/* Botón '+ Nueva Materia' */}
-                    <Boton onClick={() => setIsCreating(true)} className="btn-nueva-materia">
+                    <Boton onClick={() => setIsCreating(true)} className="ui-boton-principal">
                         <i className="fas fa-plus"></i> + Nueva Materia
                     </Boton>
                 </div>

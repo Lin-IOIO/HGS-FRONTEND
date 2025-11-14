@@ -1,0 +1,81 @@
+.coordinador-materias-container {
+    padding: 20px 40px;
+}
+
+.curso-titulo-grande {
+    font-size: 3em;
+    font-weight: 800;
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+.materias-subtitulo {
+    font-size: 1.7em;
+    font-weight: 600;
+    color: #333; 
+    margin-bottom: 25px;
+    margin-top: 25px;
+    text-align: left;
+}
+
+.materia-list {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.materia-card-coordinador {
+    border-radius: 3px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 920px; /* Ancho cómodo para el detalle */
+}
+
+.materia-info-header {
+    padding: 15px 20px;
+    /* background-color: rgba(255, 255, 255, 0.6); Fondo semi-transparente para el texto */
+    color: #333;
+}
+
+.materia-nombre {
+    font-size: 1.8em;
+    font-weight: 700;
+    color: white; /* Texto del nombre en blanco */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+.materia-info-footer {
+    padding: 10px 20px;
+    background-color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9em;
+    color: #666;
+    border-top: 1px solid #eee;
+}
+
+.plan-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.plan-actions-button{
+    display: flex;
+    justify-content: flex-end;
+    text-align: center;
+}
+
+.plan-status {
+    font-weight: 600;
+    font-size: 0.9em;
+}
+
+.plan-con {
+    color: #4CAF50; /* Verde */
+}
+
+.plan-sin {
+    color: #f44336; /* Rojo */
+}
