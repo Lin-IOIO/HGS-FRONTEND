@@ -1,25 +1,39 @@
+/* 1. Contenedor Principal */
 .layout-container {
-    display: grid;
-    grid-template-columns: 250px 1fr; 
+    display: flex; /* Usamos Flex en lugar de Grid para mayor control */
     width: 100vw;
-    height: 100vh; 
+    height: 100vh;
+    overflow: hidden; /* Evita scrollbars dobles en la ventana principal */
 }
 
-/* 2. Envoltura del contenido principal (Header + Main Area) */
+/* NOTA: Tu componente <BarraLateral /> ya tiene width: 100px en su propio CSS.
+   Al usar display: flex aquí, se respetará ese ancho automáticamente. */
+
+
+/* 2. Envoltura del contenido principal (Lado derecho) */
 .main-content-wrapper {
+    flex: 1; /* Ocupa todo el espacio restante (Ancho total - 100px del sidebar) */
     display: flex;
     flex-direction: column;
+    position: relative; /* Necesario para el contexto de apilamiento */
+    background-color: #f4f6f9; /* Color de fondo general suave */
+    
+    /* IMPORTANTE: Esto permite que el scroll ocurra SOLO en el contenido
+       y no mueva el sidebar ni el header */
+    height: 100vh; 
     overflow-y: auto; 
-    background-color: #f8f8f8; 
 }
 
-/* 3. Área donde se renderiza el contenido de la ruta (el formulario) */
+/* 3. Área donde se renderiza el contenido (El formulario/tarjetas) */
 .main-content-area {
-    padding: 30px; 
-    flex-grow: 1; 
-    background-color: #ffffff; 
+    /* CRUCIAL: Empujamos el contenido hacia abajo.
+       70px es la altura que le dimos al Header en el paso anterior.
+       Le sumamos 30px extra para que respire. Total: 100px */
+    margin-top: 70px; 
     
-    /* Opcional: Si quieres bordes redondeados o una sombra suave para el área de contenido */
-    /* border-radius: 8px; */
-    /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); */
+    padding: 30px;
+    flex-grow: 1;
+    
+    /* Opcional: Fondo blanco para el área de trabajo */
+    /* background-color: #ffffff; */ 
 }

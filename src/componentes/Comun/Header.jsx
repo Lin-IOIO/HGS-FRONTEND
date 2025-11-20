@@ -18,10 +18,6 @@ const Header = () => {
 
     return (
         <header className="header">
-            <div className="header-brand-logo">
-                {/* Ícono de la aplicación o logo */}
-                <i className="fas fa-school"></i> 
-            </div>
             <div className="header-welcome-message">
                 <h1>{getSaludo()}</h1>
             </div>

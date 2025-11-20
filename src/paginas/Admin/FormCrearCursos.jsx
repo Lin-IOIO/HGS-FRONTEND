@@ -64,7 +64,7 @@ const FormCrearCursos = ({ alEnviarCurso, alCancelar }) => {
                 </div>
 
                 <div className="form-action-area-curso">
-                    <Boton type="submit" className="btn-guardar">
+                    <Boton type="submit" className="ui-boton-principal">
                         Guardar
                     </Boton>
                 </div>

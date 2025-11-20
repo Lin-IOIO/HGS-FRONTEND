@@ -1,42 +1,88 @@
+/* Contenedor principal del Sidebar */
 .sidebar {
-    background-color: #3b5066; 
-    color: white; 
-    padding-top: 20px;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    background-color: #3b5066;
+    color: white;
+    min-height: 100vh;
+    /* Ancho fijo y estrecho, ajusta según tu gusto */
+    width: 100px; 
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centra todo horizontalmente */
+    padding-top: 20px; /* Espacio superior */
 }
 
+/* --- ESTILOS DE LA SECCIÓN DE PERFIL --- */
+.sidebar-profile-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.profile-main-icon {
+    font-size: 2.5em; /* Reducido de 3.5em a 2.5em */
+    color: #e0e0e0;
+    margin-bottom: 15px;
+}
+.profile-separator {
+    width: 80%; /* La línea no llega hasta los bordes */
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.4); /* Línea blanca semitransparente */
+}
+
+/* --- ESTILOS DEL MENÚ DE NAVEGACIÓN --- */
 .sidebar-menu {
-    list-style: none; 
+    list-style: none;
     padding: 0;
     margin: 0;
+    width: 100%; /* Para que los enlaces ocupen el ancho disponible */
 }
 
 .sidebar-item {
     margin-bottom: 5px;
+    width: 100%;
 }
 
+/* El enlace en sí */
 .sidebar-link {
     display: flex;
+    /* CAMBIO CLAVE: Coloca el icono encima del texto */
+    flex-direction: column; 
     align-items: center;
-    padding: 10px 20px;
-    color: #c0c0c0; 
+    justify-content: center;
+    padding: 15px 5px;
+    color: #c0c0c0; /* Color inactivo */
     text-decoration: none;
-    font-size: 16px;
-    transition: background-color 0.2s, color 0.2s;
+    transition: all 0.3s ease;
+    text-align: center;
 }
 
+/* Estilo de los Iconos del menú */
+.sidebar-link i {
+    margin-right: 0;
+    margin-bottom: 6px; /* Un poco menos de espacio debajo del icono */
+    font-size: 1.4em;   /* Reducido de 2em a 1.4em */
+}
+
+/* Estilo del Texto del menú */
+.sidebar-link span {
+    font-size: 0.9rem; /* Texto más pequeño, como "secundario" */
+    font-weight: 400;
+}
+
+/* --- ESTADOS HOVER Y ACTIVE --- */
+
 .sidebar-link:hover {
-    background-color: #4a6279;
-    color: #59ace7;
+    color: white;
+    /* Opcional: un ligero cambio de fondo al pasar el mouse */
+     background-color: rgba(255, 255, 255, 0.05);
 }
 
 .sidebar-link.active {
-    background-color: #557291; 
-    color: white;
-    font-weight: bold;
-}
-
-.sidebar-link i {
-    margin-right: 15px; 
-    font-size: 1.2em;
+    color: white; /* El texto e icono se vuelven blancos */
+    font-weight: 500;
+    /* En este diseño vertical, queda mejor un fondo sutil que un borde lateral */
+    background-color: rgba(255, 255, 255, 0.1); 
 }

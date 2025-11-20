@@ -50,7 +50,7 @@ const GestionMaterias = () => {
                     
                     {/* Botón '+ Nueva Materia' */}
                     <Boton onClick={() => setIsCreating(true)} className="ui-boton-principal">
-                        <i className="fas fa-plus"></i> + Nueva Materia
+                        <i className="fas fa-plus"></i>  Nueva Materia
                     </Boton>
                 </div>
 

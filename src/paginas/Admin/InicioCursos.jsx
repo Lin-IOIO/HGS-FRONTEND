@@ -38,7 +38,7 @@ const InicioCursos = ({ alCrearCurso }) => {
                     onClick={() => setIsCreating(true)}
                     className="ui-boton-principal"
                 >
-                    <i className="fas fa-plus"></i>+ Nuevo Curso 
+                    <i className="fas fa-plus"></i>  Nuevo Curso 
                 </Boton>
             </header>
 

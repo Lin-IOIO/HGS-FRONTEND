@@ -1,29 +1,46 @@
 .header {
+    /* POSICIONAMIENTO FIJO */
+    position: fixed;
+    top: 0;
+    /* Empieza justo donde termina el sidebar (ancho del sidebar = 100px) */
+    left: 100px; 
+    /* Ocupa el resto de la pantalla */
+    width: calc(100% - 100px);
+    z-index: 1000; /* Asegura que quede por encima del contenido */
+    
+    /* ESTILOS VISUALES */
+    background-color: #3b5066; /* Mismo color que sidebar o ligeramente distinto */
+    color: white;
+    height: 70px; /* Altura fija para consistencia */
     display: flex;
     align-items: center;
-    padding: 15px 25px;
-    background-color: #3b5066;
-    color: #333;
-    border-bottom: 1px solid #ddd; 
-    min-height: 60px;
+    padding: 0 30px; /* Espacio a los lados */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Sombra suave abajo */
+    box-sizing: border-box; /* Asegura que el padding no rompa el ancho */
 }
 
+/* Estilo del icono (Círculo gris claro con icono blanco/gris) */
+/* Basado en tu "primera imagen" */
 .header-brand-logo {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 35px;
-    height: 35px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
-    background-color: #dadbdd; 
-    color: white;
-    margin-right: 20px;
-    font-size: 1.2em; 
+    background-color: #e0e4e8; /* Círculo gris claro */
+    color: #5a6e82; /* Color del icono dentro del círculo */
+    margin-right: 15px;
+    font-size: 1.1em;
+    flex-shrink: 0; /* Evita que el icono se aplaste */
 }
 
 .header-welcome-message h1 {
     margin: 0;
-    font-size: 1.2em; 
-    font-weight: 300; 
-    color: #f7f2f2;
+    font-size: 1.3em; /* Letra un poco más grande y legible */
+    font-weight: 300; /* Letra fina y elegante */
+    color: #ffffff;
+    white-space: nowrap; /* Evita que el nombre se rompa en dos líneas */
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
