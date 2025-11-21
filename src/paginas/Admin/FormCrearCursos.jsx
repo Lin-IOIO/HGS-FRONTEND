@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // 1. Importamos el hook de navegación
 import Boton from '../../componentes/UI/Boton.jsx';
 import Selector from '../../componentes/UI/Selector.jsx';
 import './FormCrearCursos.css'; 
 
-// Opciones de Año y División (basado en la imagen)
+// Opciones (Se mantienen igual)
 const opcionesAnio = [
     { value: '1ro', label: 'Primero' }, 
     { value: '2do', label: 'Segundo' },
@@ -18,7 +19,10 @@ const opcionesDivision = [
     { value: '5ta', label: 'Quinta' }
 ];
 
-const FormCrearCursos = ({ alEnviarCurso, alCancelar }) => {
+// 2. Ya no desestructuramos props obligatorias (alEnviarCurso puede ser opcional o manejarse aquí)
+const FormCrearCursos = () => {
+    const navigate = useNavigate(); // 3. Inicializamos el hook
+    
     const [formData, setFormData] = useState({
         anio: '1ro',
         division: '1ra',
@@ -31,10 +35,24 @@ const FormCrearCursos = ({ alEnviarCurso, alCancelar }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Construye el nombre del curso (ej: "1ro 5ta")
+        // Construye el nombre del curso
         const nombreCurso = `${formData.anio} ${formData.division}`;
-        alEnviarCurso({ ...formData, nombre: nombreCurso });
-        alCancelar(); // Vuelve al listado después de enviar
+        const nuevoCurso = { ...formData, nombre: nombreCurso };
+
+        // --- LÓGICA DE GUARDADO ---
+        // Aquí llamarías a tu API (axios.post...)
+        console.log("Guardando curso:", nuevoCurso);
+        
+        // Simulación de éxito:
+        alert("Curso creado con éxito"); 
+        
+        // 4. Redirigir a la lista de cursos
+        navigate('/admin/cursos'); 
+    };
+
+    // Función para el botón Cancelar
+    const handleCancelar = () => {
+        navigate(-1); // Vuelve a la página anterior en el historial
     };
 
     return (
@@ -64,6 +82,16 @@ const FormCrearCursos = ({ alEnviarCurso, alCancelar }) => {
                 </div>
 
                 <div className="form-action-area-curso">
+                    {/* Botón Cancelar (Secundario) */}
+                    <Boton 
+                        type="button" 
+                        onClick={handleCancelar}
+                        className="ui-boton-principal"
+                    >
+                        Cancelar
+                    </Boton>
+
+                    {/* Botón Guardar (Principal) */}
                     <Boton type="submit" className="ui-boton-principal">
                         Guardar
                     </Boton>

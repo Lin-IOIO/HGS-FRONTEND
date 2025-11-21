@@ -1,0 +1,39 @@
+.creacion-usuarios-container {
+    max-width: 800px; /* Ancho máximo para el formulario */
+    padding: 20px 0px; 
+    text-align: left;
+    margin: 0 auto;
+}
+
+.creacion-usuarios-container h1 {
+    font-size: 2.5em; 
+    font-weight: 600; 
+    margin-bottom: 35px; 
+    color: #333;
+    text-align: left; 
+}
+
+/* Ajustes para la fila de DNI y Tipo de Usuario */
+.form-row-dni-tipo {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* Mantiene la proporción */
+    gap: 30px; /* Espacio entre DNI y Tipo de Usuario */
+    margin-bottom: 25px;
+}
+
+.creacion-usuarios-container input,
+.creacion-usuarios-container select {
+    border: none; /* Sin bordes laterales */
+    border-bottom: 2px solid #38739C;
+}
+
+.creacion-usuarios-container input{
+    background-color: #f0f0f0; 
+}
+
+/* Área del botón Guardar */
+.form-action-area {
+    margin-top: 40px;
+    text-align: center; /* Alinear el botón a la izquierda, no centrado */
+}
+

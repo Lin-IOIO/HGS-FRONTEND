@@ -1,95 +1,74 @@
 import React, { useState } from 'react';
-import Input from '../../componentes/UI/Input.jsx';
-import Selector from '../../componentes/UI/Selector.jsx';
-import Boton from '../../componentes/UI/Boton.jsx';
-import Notificacion from '../../componentes/UI/Notificacion.jsx'; 
-import './GestionUsuarios.css'; 
+import { useNavigate } from 'react-router-dom';
+import Boton from '../../componentes/UI/Boton'; // Tu componente Boton
+import './GestionUsuarios.css'; // Estilos nuevos
 
-const rolesDisponibles = [
-    { value: 'Profesor', label: 'Docente' }, 
-    { value: 'Coordinador', label: 'Coordinador' },
+// Datos simulados basados en tu imagen
+const usuariosSimulados = [
+    { id: 1, nombre: 'Juliana Esquivero Vargas', dni: '47588663', email: 'juliesquiv@gmail.com', rol: 'Profesor/a' },
+    { id: 2, nombre: 'Juliana Esquivero Vargas', dni: '47588663', email: 'juliesquiv@gmail.com', rol: 'Profesor/a' },
+    { id: 3, nombre: 'Juliana Esquivero Vargas', dni: '47588663', email: 'juliesquiv@gmail.com', rol: 'Profesor/a' },
+    { id: 4, nombre: 'Juliana Esquivero Vargas', dni: '47588663', email: 'juliesquiv@gmail.com', rol: 'Profesor/a' },
+    { id: 5, nombre: 'Juliana Esquivero Vargas', dni: '47588663', email: 'juliesquiv@gmail.com', rol: 'Profesor/a' },
+    { id: 6, nombre: 'Juliana Esquivero Vargas', dni: '47588663', email: 'juliesquiv@gmail.com', rol: 'Profesor/a' },
 ];
 
-const GestionUsuarios = ({ alEnviarUsuario }) => {
-    const [formData, setFormData] = useState({
-        email: '',
-        nombre: '',
-        apellido: '',
-        dni: '',
-        tipoUsuario: 'Profesor',
-    });
-    const [notificacion, setNotificacion] = useState(null); 
+const GestionUsuarios = () => {
+    const navigate = useNavigate();
+    const [busqueda, setBusqueda] = useState('');
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
+    const handleAgregarUsuario = () => {
+        // Esta ruta nos llevará al formulario
+        navigate('/admin/usuarios/crear');
     };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const camposRequeridos = ['email', 'nombre', 'apellido', 'dni'];
-        const camposIncompletos = camposRequeridos.some(key => formData[key].trim() === '');
-
-        if (camposIncompletos) {
-            setNotificacion({ 
-                mensaje: 'Por favor, complete todos los campos requeridos.', 
-                tipo: 'error' 
-            });
-        } else {
-            const rolVisible = formData.tipoUsuario === 'Profesor' ? 'Docente' : formData.tipoUsuario;
-
-            setNotificacion({ 
-                mensaje: `${rolVisible} ${formData.nombre} ${formData.apellido} creado exitosamente.`, 
-                tipo: 'exito' 
-            });
-            setTimeout(() => {
-                alEnviarUsuario(formData);
-                setNotificacion(null); 
-            }, 1500); 
-        }
-    };
-    
 
     return (
-        <>
-            {notificacion && (
-                <Notificacion
-                    mensaje={notificacion.mensaje}
-                    tipo={notificacion.tipo}
-                    alCerrar={() => setNotificacion(null)} // Función para cerrar al hacer clic
-                />
-            )}
-
-            <div className="gestion-usuarios-container">
-                <h1>Nuevo Usuario</h1>
-                
-                <form onSubmit={handleSubmit} className="usuario-form-layout">
-                    {/* Campos de texto completos */}
-                    <Input label="Email" name="email" value={formData.email} onChange={handleChange} placeholder="Email" required={true}/>
-                    <Input label="Nombre" name="nombre" value={formData.nombre} onChange={handleChange} placeholder="Nombre" required={true}/>
-                    <Input label="Apellido" name="apellido" value={formData.apellido} onChange={handleChange} placeholder="Apellido" required={true}/>
-
-                    {/* Fila DNI y Tipo de Usuario */}
-                    <div className="form-row-dni-tipo">
-                        <Input label="DNI" name="dni" type="number" value={formData.dni} onChange={handleChange} placeholder="DNI" required={true}/>
-                        
-                        <Selector 
-                            label="Tipo de Usuario"
-                            name="tipoUsuario"
-                            value={formData.tipoUsuario}
-                            onChange={handleChange}
-                            options={rolesDisponibles}
-                            required={true}
-                        />
-                    </div>
-
-                    {/* Botón de envío */}
-                    <div className="form-action-area">
-                        <Boton type="submit" className='ui-boton-principal'>Guardar</Boton>
-                    </div>
-                </form>
+        <div className="gestion-usuarios-container">
+            <h1 className="titulo-usuarios">Lista de Usuarios</h1>
+            
+            {/* Barra de Búsqueda */}
+            <div className="barra-busqueda-container">
+                <div className="input-wrapper">
+                   <span className="search-placeholder">Buscar</span>
+                   <i className="fas fa-search search-icon"></i>
+                   {/* Aquí iría un input real, por ahora simulamos el estilo visual */}
+                   <input 
+                        type="text" 
+                        className="input-busqueda-oculto" 
+                        value={busqueda}
+                        onChange={(e) => setBusqueda(e.target.value)}
+                    />
+                </div>
             </div>
-        </>
+
+            <hr className="divisor-usuarios" />
+
+            {/* Grid de Tarjetas */}
+            <div className="usuarios-grid">
+                {usuariosSimulados.map((usuario, index) => (
+                    <div key={index} className="usuario-card">
+                        <p className="usuario-rol">{usuario.rol}</p>
+                        <h3 className="usuario-nombre">{usuario.nombre}</h3>
+                        <p className="usuario-dato">DNI: {usuario.dni}</p>
+                        <p className="usuario-dato">Email: {usuario.email}</p>
+                        
+                        <div className="card-actions">
+                            <button className="btn-editar-usuario">Editar</button>
+                        </div>
+                    </div>
+                ))}
+            </div>
+
+            {/* Botón Agregar (Al final y centrado) */}
+            <div className="footer-actions">
+                <Boton 
+                    onClick={handleAgregarUsuario} 
+                    className="btn-agregar-usuario-grande"
+                >
+                    Agregar usuario
+                </Boton>
+            </div>
+        </div>
     );
 };
 

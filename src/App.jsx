@@ -9,6 +9,9 @@ import DisposicionPrincipal from './componentes/Comun/DisposicionPrincipal';
 // --- Imports de Páginas ---
 import TableroAdmin from './paginas/Admin/TableroAdmin';
 import GestionMaterias from './paginas/Admin/GestionMaterias';
+import GestionUsuarios from './paginas/Admin/GestionUsuarios';
+import FormCrearUsuario from './paginas/Admin/FormCrearUsuario';
+import FormCrearCursos from './paginas/Admin/FormCrearCursos';
 import InicioCoordinador from './paginas/Coordinador/InicioCoordinador';
 import CargarPlanEstudio from './paginas/Coordinador/CargarPlanEstudio';
 import GestionMateriasCoordinador from './paginas/Coordinador/GestionMateriasCoordinador';
@@ -20,6 +23,8 @@ const RutasAdminYSecretario = () => {
         <Routes>
             <Route path="inicio" element={<TableroAdmin vista="inicio" />} />
             <Route path="cursos" element={<TableroAdmin vista="cursos" />} />
+            <Route path="usuarios" element={<GestionUsuarios />} />
+            <Route path="usuarios/crear" element={<FormCrearUsuario />} />
             <Route path="cursos/crear" element={<FormCrearCursos />} />
             <Route path="cursos/:idCurso" element={<GestionMaterias />} />
             <Route path="usuarios" element={<TableroAdmin vista="usuarios" />} />
