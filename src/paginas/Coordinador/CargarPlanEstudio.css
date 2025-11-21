@@ -63,3 +63,88 @@
 .btn-subir-archivo {
     background-color: #aaa;
 }
+
+/* ... (Estilos anteriores se mantienen) ... */
+
+.archivo-existente-card {
+    background-color: white;
+    border: 1px solid #e0e0e0;
+    border-left: 5px solid #4CAF50; /* Verde indicando activo */
+    padding: 15px 20px;
+    border-radius: 5px;
+    margin-bottom: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    width: 100%;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.info-archivo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    text-align: left;
+}
+
+.archivo-icon {
+    font-size: 2em;
+    color: #f44336; /* Color PDF */
+}
+
+.datos .label {
+    font-size: 0.8em;
+    color: #888;
+    margin: 0;
+}
+
+.datos .nombre {
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+}
+
+.acciones-archivo {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-descargar-mini, .btn-eliminar-mini {
+    width: 35px;
+    height: 35px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1em;
+}
+
+.btn-descargar-mini {
+    background-color: #e3f2fd;
+    color: #2196f3;
+}
+
+.btn-descargar-mini:hover { background-color: #bbdefb; }
+
+.btn-eliminar-mini {
+    background-color: #ffebee;
+    color: #f44336;
+}
+
+.btn-eliminar-mini:hover { background-color: #ffcdd2; }
+
+.upload-instruction {
+    margin-bottom: 15px;
+    color: #666;
+    font-size: 0.95em;
+}
+
+.nuevo-archivo-preview {
+    color: #3f51b5;
+}

@@ -28,16 +28,70 @@
     border-radius: 3px;
     overflow: hidden;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    max-width: 920px; /* Ancho cómodo para el detalle */
+    max-width: 1080px; /* Ancho cómodo para el detalle */
     margin-top: 20px;
 }
 
 .materia-info-header {
     padding: 15px 20px;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /* Separa nombre de botones */
     align-items: center;
     color: #333;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+}
+
+.plan-existing-actions {
+    display: flex;
+    gap: 10px; /* Espacio entre botón descargar y modificar */
+}
+
+
+.btn-icon-action {
+    background-color: white;
+    border: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s;
+    font-size: 1em;
+}
+
+.btn-icon-action:hover {
+    background-color: rgba(255, 255, 255, 0.6);
+    color: #333;
+}
+
+.btn-modificar-plan {
+    background-color: white !important; /* Fondo blanco */
+    color: #333 !important;             /* Texto oscuro */
+    border: none;
+    font-weight: 600;
+    font-size: 0.9em;
+    padding: 8px 15px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.btn-modificar-plan:hover {
+    background-color: #f0f0f0 !important;
+}
+
+/* Ajuste para el botón Agregar original para que coincida en tamaño */
+.btn-agregar-plan {
+    background-color: rgba(255,255,255, 0.9) !important;
+    color: #333 !important;
+    font-weight: 600;
+    font-size: 0.9em;
+    padding: 8px 15px;
 }
 
 .materia-nombre {
