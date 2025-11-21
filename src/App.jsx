@@ -20,6 +20,7 @@ const RutasAdminYSecretario = () => {
         <Routes>
             <Route path="inicio" element={<TableroAdmin vista="inicio" />} />
             <Route path="cursos" element={<TableroAdmin vista="cursos" />} />
+            <Route path="cursos/crear" element={<FormCrearCursos />} />
             <Route path="cursos/:idCurso" element={<GestionMaterias />} />
             <Route path="usuarios" element={<TableroAdmin vista="usuarios" />} />
             <Route path="/" element={<Navigate to="inicio" replace />} />
