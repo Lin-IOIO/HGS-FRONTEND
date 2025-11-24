@@ -13,12 +13,11 @@
 
 .form-row-anio-division {
     display: grid; 
-    grid-template-columns: 1fr 1fr;
-    gap: 80px; 
-    width: 500px; 
-    margin: 0 auto; 
-    
-    margin-bottom: 40px;
+    grid-template-columns: 1fr 1fr 1fr; /* AHORA SON 3 COLUMNAS */
+    gap: 30px; 
+    width: 100%; /* Asegura que use el ancho disponible */
+    max-width: 700px; /* Un poco más ancho para acomodar 3 */
+    margin: 0 auto 40px auto; 
 }
 
 .form-action-area-curso {

@@ -1,76 +1,126 @@
 .inicio-cursos-container {
-    padding: 20px; /* Asegura el padding interno dentro del fondo blanco del tablero */
-    max-width: 1200px; /* Define el ancho máximo que ocupará el contenido */
+    padding: 20px;
+    max-width: 1200px;
     margin: 0 auto;
 }
 
 .inicio-cursos-header {
     display: flex;
-    justify-content: space-between; /* Mantiene Título a izquierda y Botón a derecha */
-    align-items: center;
+    justify-content: space-between;
+    align-items: center; /* Alineación vertical centrada */
     margin-bottom: 40px;
-}
-.titulo-cursos-existentes {
-    font-size: 1.8em; /* Ajusta el tamaño para que sea similar a la imagen */
-    font-weight: 600;
-    color: #cc3333; /* Rojo sutil, como en la imagen */
+    flex-wrap: wrap; /* Para pantallas pequeñas */
+    gap: 20px;
 }
 
-.btn-nuevo-curso {
-    /* Aquí puedes reutilizar la clase del Boton.css pero agregar estilos para el icono si es necesario */
+/* Contenedor para agrupar Título y Filtro a la izquierda */
+.header-left {
     display: flex;
     align-items: center;
-    gap: 8px;
-    background-color: #4a86e8; /* Azul más fuerte */
+    gap: 30px; /* Separación entre título y filtro */
 }
 
-/* src/pages/admin/VistaInicioCursos.css */
+.titulo-cursos-existentes {
+    font-size: 1.8em;
+    font-weight: 600;
+    color: #cc3333;
+    margin: 0;
+}
+
+/* --- ESTILOS DEL FILTRO --- */
+.filtro-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #f0f0f0;
+    padding: 5px 15px;
+    border-radius: 20px;
+}
+
+.filtro-container label {
+    font-size: 0.9em;
+    color: #666;
+    font-weight: 600;
+}
+
+.filtro-select {
+    border: none;
+    background: transparent;
+    font-size: 0.95em;
+    color: #333;
+    outline: none;
+    cursor: pointer;
+    padding-right: 10px;
+}
+
+/* --- ESTILOS DE LA TARJETA --- */
 .cursos-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); 
     gap: 25px;
 }
 
 .curso-card {
-    border-radius: 2px;
+    border-radius: 4px;
     overflow: hidden;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s;
-    height: 170px; /* Altura fija para la tarjeta */
-    width: 250px;
-    position: relative; /* ¡IMPORTANTE! Establece el contexto para el posicionamiento absoluto */
-    display: flex; /* Usamos flexbox para empujar el footer hacia abajo */
+    height: 160px;
+    position: relative;
+    display: flex;
     flex-direction: column;
+    cursor: pointer;
 }
 
 .curso-card:hover {
     transform: translateY(-3px);
 }
 
-/* NUEVOS ESTILOS para el nombre del curso */
 .card-curso-nombre-wrapper {
-    position: absolute; /* Posicionamiento absoluto dentro de curso-card */
-    bottom: 50px; /* Ajusta la distancia desde abajo (para no solapar el footer) */
-    left: 15px; /* Ajusta la distancia desde la izquierda */
-    padding: 5px; /* Pequeño padding para el texto si es necesario */
-    /*z-index: 1;*/ /* Asegura que esté sobre otros elementos si los hubiera */
+    position: absolute;
+    bottom: 50px;
+    left: 15px;
+    /* Cambiamos display a flex column para apilar nombre y turno */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 .curso-nombre {
-    font-size: 1.5em;
+    font-size: 1.6em;
     font-weight: 700;
-    color: white; /* Color de texto blanco para que contraste con el fondo de color */
+    color: white;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    line-height: 1; /* Reduce altura de línea para acercarlo al turno */
+}
+
+/* --- ESTILO NUEVO PARA EL TURNO --- */
+.curso-turno {
+    font-size: 0.85em;      /* Fuente más pequeña */
+    font-weight: 300;       /* Fuente más fina (light) */
+    color: rgba(255, 255, 255, 0.9); /* Blanco con ligera transparencia */
+    margin-top: 3px;        /* Pequeña separación del nombre */
+    text-transform: uppercase; /* Opcional: mayúsculas se ven bien */
+    letter-spacing: 0.5px;
 }
 
 .card-footer {
     background-color: white;
-    padding: 3px 15px;
-    height: 28%;
+    padding: 0 15px;
+    height: 35px; /* Altura fija para el pie */
+    display: flex;
+    align-items: center;
     color: #707070;
-    font-size: 0.9em;
-    text-align: left;
-    /* Usamos auto-margin o flex-grow para empujar el footer a la parte inferior */
+    font-size: 0.85em;
     margin-top: auto; 
-    width: 100%; /* Asegura que ocupe todo el ancho */
-    box-sizing: border-box; /* Incluye padding en el ancho */
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.no-cursos-msg {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: #666;
+    margin-top: 20px;
+    font-style: italic;
 }

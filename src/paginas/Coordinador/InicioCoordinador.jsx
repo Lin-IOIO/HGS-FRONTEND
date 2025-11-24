@@ -25,7 +25,7 @@ const InicioCoordinador = () => {
                 <h1 className="cursos-titulo">Todos los cursos</h1> 
             </header>
 
-            <div className="cursos-grid">
+            <div className="cursos-coo-grid">
                 {cursosSimulados.map(curso => (
                     <div 
                         key={curso.id} 

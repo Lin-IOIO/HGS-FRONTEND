@@ -1,5 +1,5 @@
 import React from 'react';
-import GestionUsuarios from './GestionUsuarios';
+import GestionUsuarios from './FormCrearUsuario';
 import InicioCursos from './InicioCursos';
 import VistaInicio from './VistaInicio';
 

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useLocation,useNavigate } from 'react-router-dom';
 import Input from '../../componentes/UI/Input.jsx';
 import Selector from '../../componentes/UI/Selector.jsx';
 import Boton from '../../componentes/UI/Boton.jsx';
@@ -10,15 +11,25 @@ const rolesDisponibles = [
     { value: 'Coordinador', label: 'Coordinador' },
 ];
 
+const initialData = {
+    email: '',
+    nombre: '',
+    apellido: '',
+    dni: '',
+    tipoUsuario: 'Profesor',
+};
+
 const GestionUsuarios = ({ alEnviarUsuario }) => {
-    const [formData, setFormData] = useState({
-        email: '',
-        nombre: '',
-        apellido: '',
-        dni: '',
-        tipoUsuario: 'Profesor',
-    });
-    const [notificacion, setNotificacion] = useState(null); 
+    const navigate = useNavigate();
+    const location = useLocation();
+    
+    // 1. Verificar si venimos de "Editar"
+    const usuarioAEditar = location.state?.usuarioAEditar;
+
+    // 2. Inicializar estado: Si hay usuario a editar, usamos sus datos; si no, vacíos.
+    const [formData, setFormData] = useState(usuarioAEditar || initialData);
+    
+    const [notificacion, setNotificacion] = useState(null);  
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -38,8 +49,12 @@ const GestionUsuarios = ({ alEnviarUsuario }) => {
         } else {
             const rolVisible = formData.tipoUsuario === 'Profesor' ? 'Docente' : formData.tipoUsuario;
 
+             const mensajeExito = usuarioAEditar 
+                ? `Usuario ${formData.nombre} modificado exitosamente.`
+                : `${rolVisible} ${formData.nombre} creado exitosamente.`;
+
             setNotificacion({ 
-                mensaje: `${rolVisible} ${formData.nombre} ${formData.apellido} creado exitosamente.`, 
+                mensaje: mensajeExito, 
                 tipo: 'exito' 
             });
             setTimeout(() => {
@@ -61,7 +76,7 @@ const GestionUsuarios = ({ alEnviarUsuario }) => {
             )}
 
             <div className="creacion-usuarios-container">
-                <h1>Nuevo Usuario</h1>
+                <h1>{usuarioAEditar ? 'Modificar Usuario' : 'Nuevo Usuario'}</h1>
                 
                 <form onSubmit={handleSubmit} className="usuario-form-layout">
                     {/* Campos de texto completos */}
@@ -85,7 +100,9 @@ const GestionUsuarios = ({ alEnviarUsuario }) => {
 
                     {/* Botón de envío */}
                     <div className="form-action-area">
-                        <Boton type="submit" className='ui-boton-principal'>Guardar</Boton>
+                       <Boton type="submit" className='ui-boton-principal'>
+                            {usuarioAEditar ? 'Guardar Cambios' : 'Guardar'}
+                        </Boton>
                     </div>
                 </form>
             </div>

@@ -5,21 +5,27 @@ import './GestionUsuarios.css'; // Estilos nuevos
 
 // Datos simulados basados en tu imagen
 const usuariosSimulados = [
-    { id: 1, nombre: 'Juliana Esquivero Vargas', dni: '47588663', email: 'juliesquiv@gmail.com', rol: 'Profesor/a' },
-    { id: 2, nombre: 'Juliana Esquivero Vargas', dni: '47588663', email: 'juliesquiv@gmail.com', rol: 'Profesor/a' },
-    { id: 3, nombre: 'Juliana Esquivero Vargas', dni: '47588663', email: 'juliesquiv@gmail.com', rol: 'Profesor/a' },
-    { id: 4, nombre: 'Juliana Esquivero Vargas', dni: '47588663', email: 'juliesquiv@gmail.com', rol: 'Profesor/a' },
-    { id: 5, nombre: 'Juliana Esquivero Vargas', dni: '47588663', email: 'juliesquiv@gmail.com', rol: 'Profesor/a' },
-    { id: 6, nombre: 'Juliana Esquivero Vargas', dni: '47588663', email: 'juliesquiv@gmail.com', rol: 'Profesor/a' },
+    { id: 1, nombre: 'Juliana', apellido: 'Esquivero Vargas', dni: '47588663', email: 'juliesquiv@gmail.com', rol: 'Profesor/a' },
+    { id: 2, nombre: 'Juliana', apellido: 'Esquivero Vargas', dni: '47588663', email: 'juliesquiv@gmail.com', rol: 'Profesor/a' },
+    { id: 3, nombre: 'Juliana', apellido: 'Esquivero Vargas', dni: '47588663', email: 'juliesquiv@gmail.com', rol: 'Profesor/a' },
+    { id: 4, nombre: 'Juliana', apellido: 'Esquivero Vargas', dni: '47588663', email: 'juliesquiv@gmail.com', rol: 'Profesor/a' },
+    { id: 5, nombre: 'Juliana', apellido: 'Esquivero Vargas', dni: '47588663', email: 'juliesquiv@gmail.com', rol: 'Profesor/a' },
+    { id: 6, nombre: 'Juliana', apellido: 'Esquivero Vargas', dni: '47588663', email: 'juliesquiv@gmail.com', rol: 'Profesor/a' },
 ];
 
 const GestionUsuarios = () => {
     const navigate = useNavigate();
     const [busqueda, setBusqueda] = useState('');
 
-    const handleAgregarUsuario = () => {
-        // Esta ruta nos llevará al formulario
-        navigate('/admin/usuarios/crear');
+   const handleAgregarUsuario = () => {
+        navigate('/admin/usuarios/crear'); // Va sin datos -> Modo Creación
+    };
+
+    // NUEVA FUNCIÓN: Maneja la edición
+    const handleEditarUsuario = (usuario) => {
+        // Navegamos a la misma ruta (o una específica de edición) 
+        // pero pasamos el objeto 'usuario' en el 'state'
+        navigate('/admin/usuarios/editar', { state: { usuarioAEditar: usuario } });
     };
 
     return (
@@ -53,7 +59,10 @@ const GestionUsuarios = () => {
                         <p className="usuario-dato">Email: {usuario.email}</p>
                         
                         <div className="card-actions">
-                            <button className="btn-editar-usuario">Editar</button>
+                             <button 
+                                className="btn-editar-usuario"
+                                onClick={() => handleEditarUsuario(usuario)}
+                            >Editar</button>
                         </div>
                     </div>
                 ))}

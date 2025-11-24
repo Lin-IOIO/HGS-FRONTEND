@@ -3,7 +3,22 @@ import Boton from '../../componentes/UI/Boton.jsx';
 import './FormNuevaMateria.css'; 
 import Notificacion from '../../componentes/UI/Notificacion.jsx';
 
-// Datos simulados para los profesores (Docentes)
+// 1. DEFINIMOS LAS MATERIAS PRECARGADAS
+const materiasPredefinidas = [
+    'Matemáticas',
+    'Lengua y Literatura',
+    'Historia',
+    'Geografía',
+    'Biología',
+    'Física',
+    'Química',
+    'Inglés',
+    'Educación Física',
+    'Arte',
+    'Informática',
+    'Ciudadanía y Participación'
+];
+
 const profesoresSimulados = [
     'Juliana Esquivero Vargas',
     'Marcelo Mengolini',
@@ -20,13 +35,12 @@ const profesoresSimulados = [
 ];
 
 const FormNuevaMateria = ({ alGuardar, alCancelar }) => {
-    const [nombreMateria, setNombreMateria] = useState('');
+    // Inicializamos vacío para obligar al usuario a elegir una opción
+    const [nombreMateria, setNombreMateria] = useState(''); 
     const [profesorAsignado, setProfesorAsignado] = useState('');
     const [busquedaProfesor, setBusquedaProfesor] = useState('');
-
     const [notificacion, setNotificacion] = useState(null);
     
-    // Lista filtrada de profesores basada en la búsqueda
     const profesoresFiltrados = profesoresSimulados.filter(profesor => 
         profesor.toLowerCase().includes(busquedaProfesor.toLowerCase())
     );
@@ -45,16 +59,15 @@ const FormNuevaMateria = ({ alGuardar, alCancelar }) => {
 
         } else {
             setNotificacion({ 
-                mensaje: 'Debe completar el nombre de la materia y asignar un profesor.', 
+                mensaje: 'Debe seleccionar una materia y asignar un profesor.', 
                 tipo: 'error' 
             });
         }
     };
     
-    // Función para manejar la selección de un profesor
     const handleProfesorSelect = (nombre) => {
         setProfesorAsignado(nombre);
-        setBusquedaProfesor(''); // Cerrar la lista de búsqueda
+        setBusquedaProfesor(''); 
     }
 
     return (
@@ -63,7 +76,7 @@ const FormNuevaMateria = ({ alGuardar, alCancelar }) => {
                 <Notificacion
                     mensaje={notificacion.mensaje}
                     tipo={notificacion.tipo}
-                    alCerrar={() => setNotificacion(null)} // Función para cerrar la notificación
+                    alCerrar={() => setNotificacion(null)} 
                 />
         )}
         <div className="nueva-materia-container">
@@ -71,24 +84,33 @@ const FormNuevaMateria = ({ alGuardar, alCancelar }) => {
             
             <form onSubmit={handleSubmit}>
                 
-                {/* 1. CAMPO MATERIA */}
+                {/* 2. REEMPLAZAMOS EL INPUT POR UN SELECT */}
                 <div className="form-group-materia">
                     <label htmlFor="materia">Materia</label>
-                    <input
-                        type="text"
+                    
+                    {/* Usamos la misma clase 'form-input-materia' para mantener el estilo */}
+                    <select
                         id="materia"
-                        placeholder="Nombre de Materia"
                         value={nombreMateria}
                         onChange={(e) => setNombreMateria(e.target.value)}
                         className="form-input-materia"
-                    />
+                        style={{ cursor: 'pointer' }} // Pequeño estilo inline para mejorar UX
+                    >
+                        {/* Opción por defecto deshabilitada */}
+                        <option value="" disabled>Seleccione una materia</option>
+                        
+                        {/* Mapeamos la lista predefinida */}
+                        {materiasPredefinidas.map((materia, index) => (
+                            <option key={index} value={materia}>
+                                {materia}
+                            </option>
+                        ))}
+                    </select>
                 </div>
 
-                {/* 2. CAMPO PROFESOR ASIGNADO (Simulación de búsqueda/selector) */}
+                {/* CAMPO PROFESOR (Sin cambios) */}
                 <div className="form-group-materia">
                     <label htmlFor="profesor">Profesor Asignado</label>
-                    
-                    {/* Input que muestra el profesor seleccionado o permite buscar */}
                     <div className="custom-selector-wrapper">
                         <input
                             type="text"
@@ -97,10 +119,10 @@ const FormNuevaMateria = ({ alGuardar, alCancelar }) => {
                             onChange={(e) => setBusquedaProfesor(e.target.value)}
                             placeholder="Buscar Profesor"
                             className="form-input-materia profesor-input"
+                            autoComplete="off" 
                         />
                         <i className="fas fa-search search-icon"></i>
                         
-                        {/* Dropdown de Profesores Filtrados */}
                         {(busquedaProfesor.length > 0 || !profesorAsignado) && profesoresFiltrados.length > 0 && (
                             <ul className="profesor-dropdown">
                                 {profesoresFiltrados.map((profesor, index) => (
@@ -117,7 +139,6 @@ const FormNuevaMateria = ({ alGuardar, alCancelar }) => {
                     </div>
                 </div>
 
-                {/* 3. BOTÓN GUARDAR */}
                 <div className="form-actions-materia">
                     <Boton type="submit" className='ui-boton-principal'>Guardar</Boton>
                     <Boton onClick={alCancelar} style={{marginLeft: '10px'}} variante="secundaria" className='ui-boton-principal'>Cancelar</Boton>
