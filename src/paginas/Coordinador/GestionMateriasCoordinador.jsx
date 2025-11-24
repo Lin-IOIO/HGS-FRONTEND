@@ -79,7 +79,7 @@ const GestionMateriasCoordinador = () => {
                                 </div>
                             </div>
                             
-                            <div className="materia-info-footer">
+                            <div className="materia-info-footer-coo">
                                 <span>Profesor/a: {materia.profesor}</span>
                                 
                                 {materia.tienePlan ? (

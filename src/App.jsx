@@ -12,6 +12,7 @@ import GestionMaterias from './paginas/Admin/GestionMaterias';
 import GestionUsuarios from './paginas/Admin/GestionUsuarios';
 import FormCrearUsuario from './paginas/Admin/FormCrearUsuario';
 import FormCrearCursos from './paginas/Admin/FormCrearCursos';
+import FormNuevaMateria from './paginas/Admin/FormNuevaMateria';
 import InicioCoordinador from './paginas/Coordinador/InicioCoordinador';
 import CargarPlanEstudio from './paginas/Coordinador/CargarPlanEstudio';
 import GestionMateriasCoordinador from './paginas/Coordinador/GestionMateriasCoordinador';
@@ -28,6 +29,8 @@ const RutasAdminYSecretario = () => {
             <Route path="usuarios/editar" element={<FormCrearUsuario />} />
             <Route path="cursos/crear" element={<FormCrearCursos />} />
             <Route path="cursos/:idCurso" element={<GestionMaterias />} />
+            <Route path="materias/crear" element={<FormNuevaMateria />} />
+            <Route path="materias/editar" element={<FormNuevaMateria />} />
             <Route path="usuarios" element={<TableroAdmin vista="usuarios" />} />
             <Route path="/" element={<Navigate to="inicio" replace />} />
         </Routes>

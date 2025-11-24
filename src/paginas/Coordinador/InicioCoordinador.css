@@ -1,5 +1,21 @@
-.coordinador-container {
+.coordinador-container{
     padding: 20px 40px;
+}
+
+.coordinador-header{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 30px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+}
+
+/* AÑADIDO: Wrapper para alinear título y filtro (copiado de Admin) */
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 30px;
 }
 
 .cursos-titulo {
@@ -10,10 +26,11 @@
     text-align: left;
 }
 
+
 .cursos-coo-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 30px;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); 
+    gap: 25px;
 }
 
 
@@ -61,6 +78,14 @@
     box-sizing: border-box;
     display: flex;
     align-items: center; /* Alineación vertical del texto */
+}
+
+.no-cursos-msg {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: #666;
+    margin-top: 20px;
+    font-style: italic;
 }
 
 /* Los estilos antiguos han sido eliminados/reemplazados */

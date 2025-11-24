@@ -1,55 +1,43 @@
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React from 'react'; // Quitamos useState
+import { useParams, useNavigate } from 'react-router-dom';
 import Boton from '../../componentes/UI/Boton.jsx'; 
 import './GestionMaterias.css'; 
-import FormNuevaMateria from './FormNuevaMateria.jsx';
+// Ya no importamos FormNuevaMateria aquí, porque se carga por ruta
 
-// Datos simulados (como se ve en image_49877e.png)
 const materiasSimuladas = [
     { id: 1, nombre: 'Matemáticas', profesor: 'Juliana Esquivero Vargas', color: '#ff7f7f' },
-    { id: 2, nombre: 'Biología', profesor: 'Marcelo Mengolini', color: '#f8c07f' },
+    // Materia sin profesor (profesor: cadena vacía)
+    { id: 2, nombre: 'Biología', profesor: '', color: '#f8c07f' },
+    { id: 3, nombre: 'Informática', profesor: 'Marcelo Mengolini', color: '#7fdbff' },
 ];
 
 const GestionMaterias = () => {
-    // Usamos useParams para obtener el ID (nombre) del curso de la URL
     let { idCurso } = useParams();
-    // Limpiamos el nombre para mostrarlo (ej: '2do-3ra' -> '2do 3ra')
-    const nombreCurso = idCurso.replace('-', ' '); 
+    const navigate = useNavigate();
+    
+    // Si idCurso existe, lo formateamos, si no, ponemos un título genérico
+    const nombreCurso = idCurso ? idCurso.replace('-', ' ') : 'Gestión de Materias'; 
 
-    const [isCreating, setIsCreating] = useState(false);
-    
-    // Función de ejemplo para crear materia
-    const handleCrearMateria = (datosMateria) => {
-        console.log(`Creando materia para ${nombreCurso}:`, datosMateria);
-        setIsCreating(false);
-    }
-    
-    // Si estamos creando, mostramos el formulario
-    if (isCreating) {
-        return (
-            <div className="gestion-materias-container">
-                <FormNuevaMateria 
-                    alGuardar={handleCrearMateria} 
-                    alCancelar={() => setIsCreating(false)} 
-                />
-            </div>
-        );
-    }
+    const handleCrearMateria = () => {
+        // Navegamos a la ruta de creación
+        navigate('/admin/materias/crear');
+    };
+
+    const handleModificarMateria = (materia) => {
+        // Navegamos a editar enviando la materia en el estado
+        navigate('/admin/materias/editar', { state: { materiaAEditar: materia } });
+    };
 
     return (
         <div className="gestion-materias-container">
             <header className="materias-header">
-                {/* Título grande del curso (ej: 2do 3ra) */}
                 <h1 className="curso-titulo-grande">{nombreCurso}</h1>
             </header>
             
             <section className="materias-listado-section">
                 <div className="materias-listado-header">
-                    {/* Título 'materias asignadas:' */}
                     <h2 className="materias-subtitulo">Materias Asignadas:</h2>
-                    
-                    {/* Botón '+ Nueva Materia' */}
-                    <Boton onClick={() => setIsCreating(true)} className="ui-boton-principal">
+                    <Boton onClick={handleCrearMateria} className="ui-boton-principal">
                         <i className="fas fa-plus"></i>  Nueva Materia
                     </Boton>
                 </div>
@@ -57,13 +45,21 @@ const GestionMaterias = () => {
                 <div className="materias-grid">
                     {materiasSimuladas.map(materia => (
                         <div key={materia.id} className="materia-card">
-                            {/* Color de fondo degradado (simulado con style) */}
                             <div className="materia-info-header" style={{ backgroundColor: materia.color }}>
                                 <span className="materia-nombre">{materia.nombre}</span>
+                                <Boton
+                                    onClick={() => handleModificarMateria(materia)}
+                                    className="btn-agregar-plan" 
+                                    style={{ float: 'right', marginLeft: 'auto', backgroundColor: 'white', color: '#333' }}
+                                >
+                                    <i className="fas fa-edit"></i> Modificar
+                                </Boton>
                             </div>
-                            {/* Información del profesor */}
                             <div className="materia-info-footer">
-                                Profesor/a: {materia.profesor}
+                                Profesor/a: 
+                                <span style={{ fontWeight: materia.profesor ? 'normal' : 'italic', color: materia.profesor ? '#333' : '#e74c3c' }}>
+                                    {materia.profesor || 'Sin Asignar'}
+                                </span>
                             </div>
                         </div>
                     ))}
