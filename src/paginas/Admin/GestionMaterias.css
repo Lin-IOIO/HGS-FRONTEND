@@ -48,12 +48,10 @@
 }
 
 .materia-info-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  color: white;
-  font-weight: bold;
+    padding: 15px 20px;
+    color: white;
+    font-weight: 600;
+    text-align: left;
 }
 
 .materia-nombre {
@@ -62,8 +60,6 @@
 }
 
 .materia-info-footer {
-    display: flex;
-    gap: calc(4px);
     padding: 10px 20px;
     background-color: white;
     color: #666;
