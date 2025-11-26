@@ -1,6 +1,6 @@
 import React from 'react';
-import GestionUsuarios from './FormCrearUsuario';
-import InicioCursos from './InicioCursos';
+import GestionUsuarios from './UsuarioForm';
+import CursosMain from './CursosMain';
 import VistaInicio from './VistaInicio';
 
 // Función temporal para simular la acción de guardar un nuevo usuario
@@ -31,7 +31,7 @@ const TableroAdmin = ({ vista }) => {
             
             case 'cursos':
                 // TO DO: Implementar el formulario de ConfiguraciónCursosñ
-                return <InicioCursos alCrearCurso={handleCrearCurso} />;
+                return <CursosMain alCrearCurso={handleCrearCurso} />;
                 
             case 'inicio':
                 return <VistaInicio />

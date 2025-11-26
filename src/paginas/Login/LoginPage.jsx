@@ -13,7 +13,7 @@ const simularLoginAPI = async (email, password) => {
         return { 
             success: true, 
             token: 'jwt-coordinador-token-12345',
-            user: { role: 'coordinador', nombre: 'José Román', apellido: 'Giaccomo' } 
+            user: { rol: 'coordinador', nombre: 'José Román', apellido: 'Giaccomo' } 
         };
     }
     
@@ -21,7 +21,7 @@ const simularLoginAPI = async (email, password) => {
         return { 
             success: true, 
             token: 'jwt-docente-token-54321',
-            user: { role: 'docente', nombre: 'Ana María', apellido: 'Pérez' }
+            user: { rol: 'docente', nombre: 'Ana María', apellido: 'Pérez' }
         };
     }
 
@@ -29,7 +29,7 @@ const simularLoginAPI = async (email, password) => {
         return { 
             success: true, 
             token: 'jwt-admin-token-98765',
-            user: { role: 'admin', nombre: 'Administrador', apellido: 'Sistema' }
+            user: { rol: 'admin', nombre: 'Administrador', apellido: 'Sistema' }
         };
     }
 
@@ -58,12 +58,12 @@ const LoginPage = () => {
 
         try {
             const response = await simularLoginAPI(email, password);
-            const role = response.user.role;
+            const rol = response.user.rol;
             const token = response.token; 
             
             localStorage.setItem('authToken', token);
 
-            const roleForContext = role.charAt(0).toUpperCase() + role.slice(1);
+            const roleForContext = rol.charAt(0).toUpperCase() + rol.slice(1);
 
             login({ 
                 rol: roleForContext, 
