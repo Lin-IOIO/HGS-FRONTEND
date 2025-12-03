@@ -1,5 +1,5 @@
 import React from 'react';
-import './Boton.css'; // Archivo de estilos para Boton
+import './Boton.css';
 
 const Boton = ({ children, onClick, type = 'button', disabled = false, className }) => {
     return (

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useLocation } from 'wouter';
 import Boton from '../../componentes/UI/Boton.jsx'; 
 import './GestionMateriasCoordinador.css';
 
@@ -10,24 +10,19 @@ const materiasSimuladas = [
 
 const GestionMateriasCoordinador = () => {
     const { idCurso } = useParams();
-    const navigate = useNavigate();
+    const [, navigate] = useLocation();
     const nombreCurso = idCurso.replace('-', ' ');
 
-    // Función para ir a cargar o modificar plan
     const handleGestionarPlan = (materia) => {
-        // Pasamos el estado a la siguiente página para saber si estamos editando
         navigate(`/coordinador/cursos/${idCurso}/plan/${materia.id}`, {
             state: { 
                 nombreMateria: materia.nombre,
-                archivoExistente: materia.archivoNombre // Pasamos el nombre del archivo si existe
+                archivoExistente: materia.archivoNombre
             }
         });
     };
-
-    // Función simulada de descarga
     const handleDescargarPlan = (nombreArchivo) => {
         alert(`Descargando archivo: ${nombreArchivo}...`);
-        // Aquí iría la lógica real: window.open(url, '_blank');
     };
 
     return (
@@ -45,11 +40,8 @@ const GestionMateriasCoordinador = () => {
                             
                             <div className="materia-info-header">
                                 <span className="materia-nombre">{materia.nombre}</span>
-                                
-                                {/* --- LOGICA CAMBIADA AQUÍ --- */}
                                 <div className="header-actions">
                                     {materia.tienePlan ? (
-                                        // CASO 1: YA TIENE PLAN (Mostrar Descargar y Modificar)
                                         <div className="plan-existing-actions">
                                             <button 
                                                 className="btn-icon-action btn-descargar"
@@ -66,7 +58,6 @@ const GestionMateriasCoordinador = () => {
                                             </Boton>
                                         </div>
                                     ) : (
-                                        // CASO 2: NO TIENE PLAN (Botón Agregar)
                                         <div className="plan-actions-button">
                                             <Boton 
                                                 onClick={() => handleGestionarPlan(materia)} 
@@ -79,7 +70,7 @@ const GestionMateriasCoordinador = () => {
                                 </div>
                             </div>
                             
-                            <div className="materia-info-footer">
+                            <div className="materia-info-footer-coo">
                                 <span>Profesor/a: {materia.profesor}</span>
                                 
                                 {materia.tienePlan ? (

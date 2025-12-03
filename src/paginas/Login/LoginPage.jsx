@@ -1,55 +1,43 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../contexto/conAutenticacion'; // Asegúrate que la ruta sea correcta
+import { useLocation } from 'wouter';
+import { useAuth } from '../../contexto/conAutenticacion'; 
 import Boton from '../../componentes/UI/Boton';
 import './LoginPage.css';
+import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
 
-// --- Configuración de Simulación ---
-const simularLoginAPI = async (email, password) => {
-    // Simulación de espera de red
-    await new Promise(resolve => setTimeout(resolve, 1000));
+const API_LOGIN_URL = 'http://localhost:5000/api/login'; 
 
-    if (email === 'coordinador@test.com' && password === 'password123') {
-        return { 
-            success: true, 
-            token: 'jwt-coordinador-token-12345',
-            user: { rol: 'coordinador', nombre: 'José Román', apellido: 'Giaccomo' } 
-        };
+const loginUser = async (dni, password) => {
+    try {
+        const body = { documento: dni, password };
+        const response = await axios.post(API_LOGIN_URL, body, {
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+        if (response.status === 200) {
+            return response.data; // Devuelve los datos del usuario y el token
+        } else {
+            throw new Error('Error al iniciar sesión');
+        }
+    } catch (error) {
+        console.error("Error en la llamada a la API:", error);
+        throw error; // Re-lanza el error para que el componente lo maneje
     }
-    
-    if (email === 'docente@test.com' && password === 'password123') {
-        return { 
-            success: true, 
-            token: 'jwt-docente-token-54321',
-            user: { rol: 'docente', nombre: 'Ana María', apellido: 'Pérez' }
-        };
-    }
-
-    if (email === 'admin@test.com' && password === 'password123') {
-        return { 
-            success: true, 
-            token: 'jwt-admin-token-98765',
-            user: { rol: 'admin', nombre: 'Administrador', apellido: 'Sistema' }
-        };
-    }
-
-    throw new Error('Credenciales inválidas');
 };
 
 const ROLE_REDIRECTS = {
-    'coordinador': '/coordinador/inicio', 
-    'docente': '/docente/inicio',      
-    'admin': '/admin/inicio',             
+    'coordinador': '/coordinador/inicio',
+    'docente': '/docente/inicio',
+    'admin': '/admin/inicio',
 };
 
-// --- Componente Principal ---
-const LoginPage = () => {
-    const [email, setEmail] = useState('coordinador@test.com'); 
-    const [password, setPassword] = useState('password123'); 
+export default function LoginPage() {
+    const [dni, setDni] = useState('coordinador@test.com');
+    const [password, setPassword] = useState('password123');
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const navigate = useNavigate();
-    const { login } = useAuth(); 
+    const [, navigate] = useLocation();
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -57,27 +45,21 @@ const LoginPage = () => {
         setError('');
 
         try {
-            const response = await simularLoginAPI(email, password);
-            const rol = response.user.rol;
-            const token = response.token; 
-            
+            const data = await loginUser(dni, password); 
+            const token = data.token;
+            const decode = jwtDecode(token)
+            console.log(decode)
+            const rol = decode.data.rol;
             localStorage.setItem('authToken', token);
+            localStorage.setItem('rol', rol);
 
-            const roleForContext = rol.charAt(0).toUpperCase() + rol.slice(1);
-
-            login({ 
-                rol: roleForContext, 
-                nombre: response.user.nombre,
-                apellido: response.user.apellido,
-            }); 
-            
-            const redirectPath = ROLE_REDIRECTS[role];
+            const redirectPath = ROLE_REDIRECTS[rol];
 
             if (redirectPath) {
                 navigate(redirectPath);
             } else {
-                setError(`Rol de usuario no reconocido: ${role}`);
-                localStorage.removeItem('authToken'); 
+                setError(`Rol de usuario no reconocido: ${rol}`);
+                localStorage.removeItem('authToken');
             }
 
         } catch (err) {
@@ -90,8 +72,8 @@ const LoginPage = () => {
 
     return (
         <div className="login-page-container">
-            
-            {/* SECCIÓN IZQUIERDA: LOGO */}
+
+           
             <div className="left-section">
                 <div className="brand-content">
                     <h1 className="brand-logo">LOGO</h1>
@@ -99,29 +81,29 @@ const LoginPage = () => {
                 </div>
             </div>
 
-            {/* SECCIÓN DERECHA: FORMULARIO */}
+            
             <div className="right-section">
                 <div className="login-card">
                     <h2 className="form-title">Iniciar Sesión</h2>
-                    
+
                     <form onSubmit={handleLogin}>
                         <div className="input-group">
-                            <label htmlFor="email">Email</label>
-                            <input 
-                                id="email" 
-                                type="email" 
-                                placeholder="Email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
+                            <label htmlFor="dni">DNI</label>
+                            <input
+                                id="dni"
+                                type="number"
+                                placeholder="Ingrese su DNI - Sin puntos"
+                                value={dni}
+                                onChange={(e) => setDni(e.target.value)}
                                 required
                             />
                         </div>
 
                         <div className="input-group">
                             <label htmlFor="password">Contraseña</label>
-                            <input 
-                                id="password" 
-                                type="password" 
+                            <input
+                                id="password"
+                                type="password"
                                 placeholder="Contraseña"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
@@ -144,6 +126,4 @@ const LoginPage = () => {
 
         </div>
     );
-};
-
-export default LoginPage;
+}
