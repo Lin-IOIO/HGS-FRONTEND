@@ -80,7 +80,7 @@ const RoutesContainer = () => {
             <Route
                 path="/admin/*"
                 element={
-                    <RutaProtegida rolesPermitidos={['Admin']}>
+                    <RutaProtegida rolesPermitidos={['admin']}>
                         <DisposicionPrincipal>
                             <RutasAdminYSecretario />
                         </DisposicionPrincipal>
@@ -90,7 +90,7 @@ const RoutesContainer = () => {
             <Route
                 path="/coordinador/*"
                 element={
-                    <RutaProtegida rolesPermitidos={['Coordinador']}>
+                    <RutaProtegida rolesPermitidos={['coordinador']}>
                         <DisposicionPrincipal>
                             <RutasCoordinador />
                         </DisposicionPrincipal>

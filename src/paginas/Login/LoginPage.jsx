@@ -15,7 +15,7 @@ const loginUser = async (dni, password) => {
             headers: { 'Content-Type': 'application/json' }
         });
 
-        if (response.status === 200) {
+        if (response.status >= 200 && response.status < 300) {
             return response.data; // Devuelve los datos del usuario y el token
         } else {
             throw new Error('Error al iniciar sesión');
@@ -33,11 +33,13 @@ const ROLE_REDIRECTS = {
 };
 
 export default function LoginPage() {
-    const [dni, setDni] = useState('coordinador@test.com');
-    const [password, setPassword] = useState('password123');
+    const [dni, setDni] = useState('');
+    const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [, navigate] = useLocation();
+    const { login } = useAuth();
+    
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -48,10 +50,19 @@ export default function LoginPage() {
             const data = await loginUser(dni, password); 
             const token = data.token;
             const decode = jwtDecode(token)
-            console.log(decode)
             const rol = decode.data.rol;
+            const usuario = decode.data.usuario; 
+            const [nombre, apellido] = usuario ? usuario.split(' ') : ['', ''];
             localStorage.setItem('authToken', token);
             localStorage.setItem('rol', rol);
+            login({
+                token: token,
+                user: {
+                    rol: rol,
+                    nombre: nombre,
+                    apellido: apellido
+                }
+            });
 
             const redirectPath = ROLE_REDIRECTS[rol];
 

@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "checkJs": true,
+        "target": "ESNext",
+        "module": "ESNext",
+        "moduleResolution": "Node",
+        "jsx": "react-jsx",
+        "baseUrl": "./src",
+        "paths":{
+            "componentes/*": ["componentes/*"],
+            "contexto/*": ["contexto/*"],
+            "apis/*": ["apis/*"],
+            "hooks/*": ["hooks/*"]
+        }
+    },
+    "include": ["src"],
+    "exclude": ["node_modules", "dist", "dist-staging"],
+    "types": ["vite/client"]
+}

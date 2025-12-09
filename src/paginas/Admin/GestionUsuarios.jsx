@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useLocation } from 'wouter';
+import { Navigate } from 'react-router-dom';
 import Boton from '../../componentes/UI/Boton'; // Tu componente Boton
 import './GestionUsuarios.css'; // Estilos nuevos
 
@@ -14,7 +15,7 @@ const usuariosIniciales = [
 ];
 
 const GestionUsuarios = () => {
-    const [, navigate] = useLocation();
+    const navigate = useNavigate();
     const [busqueda, setBusqueda] = useState('');
     const [usuarios, setUsuarios] = useState(usuariosIniciales);
     const [modalAbierto, setModalAbierto] = useState(false);

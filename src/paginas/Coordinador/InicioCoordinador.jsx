@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useLocation } from 'wouter';
+import { Navigate, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './InicioCoordinador.css'; 
 
@@ -22,7 +23,7 @@ const getCursos = async () => {
 }
 
 const InicioCoordinador = () => {
-    const [, navigate] = useLocation();
+    const navigate = useNavigate();
 
     const [filtroTurno, setFiltroTurno] = useState(''); // '' significa "Todos"
 

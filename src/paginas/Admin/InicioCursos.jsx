@@ -1,18 +1,17 @@
-import React, { useState } from 'react';
-import { useLocation } from 'wouter';
-import Boton from '../../componentes/UI/Boton.jsx'; 
 import './InicioCursos.css'; 
-const cursosSimulados = [
-    { nombre: '2do 3ra', materias: 2, color: '#f8c07f', turno: 'Mañana' },
-    { nombre: '5to 1ra', materias: 1, color: '#f57e84', turno: 'Tarde' },
-    { nombre: '1ro 8va', materias: 1, color: '#a68ee8', turno: 'Vespertino' },
-    { nombre: '2do 4ta', materias: 3, color: '#e88ee8', turno: 'Mañana' },
-    { nombre: '5to 3ra', materias: 1, color: '#a8f599', turno: 'Tarde' },
-];
+import { API } from 'apis/constantes.js';
+import { useGet } from 'hooks/useGet.js';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import Boton from '../../componentes/UI/Boton';
+
+const colores = ['#f8c87f', '#f57e84', '#a68ee8', '#e88ee8', '#a8f599'];
 
 const InicioCursos = () => {
-    const [, navigate] = useLocation();
-    
+    const urlCursos = `${API}/cursos`;
+    const [cursos, loading, error] = useGet(urlCursos, []);
+    const navigate = useNavigate();
+
     const [filtroTurno, setFiltroTurno] = useState('');
 
     const handleCardClick = (cursoId) => {
@@ -22,10 +21,22 @@ const InicioCursos = () => {
     const handleCrearCurso = () => {
         navigate('crear'); 
     };
+    const cursosFiltrados = filtroTurno 
+        ? cursos.filter(curso => curso.turno === filtroTurno)
+        : cursos;
 
-   const cursosFiltrados = filtroTurno 
-    ? cursosSimulados.filter(curso => curso.turno === filtroTurno)
-    : cursosSimulados;
+    if (loading) {
+        return <div className="inicio-cursos-container"><p>Cargando cursos...</p></div>;
+    }
+
+    if (error) {
+        return (
+            <div className="inicio-cursos-container">
+                <p className="error-msg">{error}</p>
+                <Boton onClick={() => window.location.reload()}>Reintentar</Boton>
+            </div>
+        );
+    }
 
     return (
         <div className="inicio-cursos-container">
@@ -57,26 +68,26 @@ const InicioCursos = () => {
             </header>
 
             <div className="cursos-grid">
-                {cursosFiltrados.map((curso, index) =>(
+                {cursos.map((curso, index) =>(
                     <div 
-                        key={index} 
+                        key={curso._id || index} // Preferible usar ID real de la BD
                         className="curso-card"
-                        style={{ backgroundColor: curso.color }}
-                        onClick={() => handleCardClick(curso.nombre.replace(' ', '-'))}
+                        style={{ backgroundColor: colores[index % colores.length] }} 
+                        onClick={() => handleCardClick(curso._id || curso.nombre)}
                     >
                         <div className="card-curso-nombre-wrapper">
-                            <span className="curso-nombre">{curso.nombre}</span>
+                            <span className="curso-nombre">{curso.nombre}</span> 
                             <span className="curso-turno">{curso.turno}</span>
                         </div>
                         
                         <div className="card-footer">
-                            <p>Materias asignadas: {curso.materias}</p>
+                            <p>Materias asignadas: {curso.materias ? curso.materias.length : 0}</p>
                         </div>
                     </div>
                 ))}
                 
                 {cursosFiltrados.length === 0 && (
-                    <p className="no-cursos-msg">No se encontraron cursos para este turno.</p>
+                    <p className="no-cursos-msg">No se encontraron cursos.</p>
                 )}
             </div>
         </div>

@@ -10,11 +10,11 @@ const materiasSimuladas = [
 
 const GestionMateriasCoordinador = () => {
     const { idCurso } = useParams();
-    const [, navigate] = useLocation();
+    const location = useLocation();
     const nombreCurso = idCurso.replace('-', ' ');
 
     const handleGestionarPlan = (materia) => {
-        navigate(`/coordinador/cursos/${idCurso}/plan/${materia.id}`, {
+        location(`/coordinador/cursos/${idCurso}/plan/${materia.id}`, {
             state: { 
                 nombreMateria: materia.nombre,
                 archivoExistente: materia.archivoNombre

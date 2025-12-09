@@ -1,5 +1,6 @@
 import React from 'react'; // Quitamos useState
 import { useParams, useLocation } from 'wouter';
+import { Navigate } from 'react-router-dom';
 import Boton from '../../componentes/UI/Boton.jsx'; 
 import './GestionMaterias.css';
 
@@ -11,7 +12,7 @@ const materiasSimuladas = [
 
 const GestionMaterias = () => {
     let { idCurso } = useParams();
-    const [, navigate] = useLocation();
+    const navigate = useNavigate();
     
     const nombreCurso = idCurso ? idCurso.replace('-', ' ') : 'Gestión de Materias'; 
 

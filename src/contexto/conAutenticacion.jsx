@@ -13,6 +13,7 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(defaultUser);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+    const [token, setToken] = useState('');
 
     const API_VALIDATE_TOKEN_URL = 'http://localhost:5000/api/middleware/verificarToken';
 
@@ -21,6 +22,7 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem('rol', userData.user.rol);
         localStorage.setItem('nombre', userData.user.nombre);
         localStorage.setItem('apellido', userData.user.apellido);
+        setToken(userData.token);
 
         setUser({
             rol: userData.user.rol,
@@ -50,7 +52,7 @@ export const AuthProvider = ({ children }) => {
                     }
                 });
 
-                if (response.status === 200) {
+                if (response.status >= 200 && response.status < 300) {
                     setUser({
                         rol: response.data.user.rol,
                         nombre: response.data.user.nombre,
@@ -80,7 +82,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     return (
-        <AuthContext.Provider value={{ user, isAuthenticated, login, logout }}>
+        <AuthContext.Provider value={{ user, token, isAuthenticated, login, logout }}>
             {children}
         </AuthContext.Provider>
     );
