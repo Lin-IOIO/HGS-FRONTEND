@@ -70,7 +70,7 @@ const InicioCursos = () => {
             <div className="cursos-grid">
                 {cursos.map((curso, index) =>(
                     <div 
-                        key={curso._id || index} // Preferible usar ID real de la BD
+                        key={curso._id || index}
                         className="curso-card"
                         style={{ backgroundColor: colores[index % colores.length] }} 
                         onClick={() => handleCardClick(curso._id || curso.nombre)}

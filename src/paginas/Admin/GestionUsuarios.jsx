@@ -1,27 +1,30 @@
-import React, { useState } from 'react';
-import { useLocation } from 'wouter';
-import { Navigate } from 'react-router-dom';
-import Boton from '../../componentes/UI/Boton'; // Tu componente Boton
-import './GestionUsuarios.css'; // Estilos nuevos
-
-// Datos simulados iniciales (usa un estado real para datos en una app real)
-const usuariosIniciales = [
-    { id: 1, nombre: 'Puta', apellido: 'Esquivero Vargas', dni: '47588663', email: 'juliesquiv@gmail.com', rol: 'Profesor/a' },
-    { id: 2, nombre: 'Juliana', apellido: 'Esquivero Vargas', dni: '47588663', email: 'juliesquiv@gmail.com', rol: 'Profesor/a' },
-    { id: 3, nombre: 'Juliana', apellido: 'Esquivero Vargas', dni: '47588663', email: 'juliesquiv@gmail.com', rol: 'Profesor/a' },
-    { id: 4, nombre: 'Juliana', apellido: 'Esquivero Vargas', dni: '47588663', email: 'juliesquiv@gmail.com', rol: 'Profesor/a' },
-    { id: 5, nombre: 'Juliana', apellido: 'Esquivero Vargas', dni: '47588663', email: 'juliesquiv@gmail.com', rol: 'Profesor/a' },
-    { id: 6, nombre: 'Juliana', apellido: 'Esquivero Vargas', dni: '47588663', email: 'juliesquiv@gmail.com', rol: 'Profesor/a' },
-];
+import React, { useState, useEffect  } from 'react';
+import { API } from 'apis/constantes.js';
+import { useGet } from 'hooks/useGet.js';
+import { useNavigate } from 'react-router-dom';
+import Boton from '../../componentes/UI/Boton';
+import './GestionUsuarios.css'; 
 
 const GestionUsuarios = () => {
+
+    const urlUsuarios = `${API}/usuarios`;
+    const [dataUsuarios, loading, error] = useGet(urlUsuarios, []);
+    
+    const [usuarios, setUsuarios] = useState([]);
+
     const navigate = useNavigate();
     const [busqueda, setBusqueda] = useState('');
-    const [usuarios, setUsuarios] = useState(usuariosIniciales);
     const [modalAbierto, setModalAbierto] = useState(false);
     const [usuarioAEliminar, setUsuarioAEliminar] = useState(null);
     const [mensajeExito, setMensajeExito] = useState(false);
 
+    console.log("Datos de usuarios obtenidos:", dataUsuarios)
+
+    useEffect(() => {
+        if (dataUsuarios) {
+            setUsuarios(dataUsuarios);
+        }
+    }, [dataUsuarios]);
 
     const handleMostrarConfirmacion = (usuario) => {
         setUsuarioAEliminar(usuario);
@@ -58,10 +61,23 @@ const GestionUsuarios = () => {
     };
 
     const usuariosFiltrados = usuarios.filter(usuario => 
-        (usuario.nombre.toLowerCase() + ' ' + usuario.apellido.toLowerCase()).includes(busqueda.toLowerCase()) ||
+        (usuario.nombre + ' ' + usuario.apellido).includes(busqueda) ||
         usuario.dni.includes(busqueda) ||
-        usuario.email.toLowerCase().includes(busqueda.toLowerCase())
+        usuario.email.toLowerCase().includes(busqueda)
     );
+
+    if (loading) {
+        return <div className="gestion-usuarios-container"><p>Cargando usuarios...</p></div>;
+    }
+
+    if (error) {
+        return (
+            <div className="gestion-usuarios-container">
+                <p className="error-msg">{error}</p>
+                <Boton onClick={() => window.location.reload()}>Reintentar</Boton>
+            </div>
+        );
+    }
 
     return (
         <div className="gestion-usuarios-container">

@@ -37,7 +37,7 @@ export default function LoginPage() {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const [, navigate] = useLocation();
+    const [location, setLocation] = useLocation();
     const { login } = useAuth();
     
 
@@ -51,6 +51,7 @@ export default function LoginPage() {
             const token = data.token;
             const decode = jwtDecode(token)
             const rol = decode.data.rol;
+            const id = decode.data.id;
             const usuario = decode.data.usuario; 
             const [nombre, apellido] = usuario ? usuario.split(' ') : ['', ''];
             localStorage.setItem('authToken', token);
@@ -58,6 +59,7 @@ export default function LoginPage() {
             login({
                 token: token,
                 user: {
+                    id: id,
                     rol: rol,
                     nombre: nombre,
                     apellido: apellido
@@ -67,7 +69,7 @@ export default function LoginPage() {
             const redirectPath = ROLE_REDIRECTS[rol];
 
             if (redirectPath) {
-                navigate(redirectPath);
+                setLocation(redirectPath);
             } else {
                 setError(`Rol de usuario no reconocido: ${rol}`);
                 localStorage.removeItem('authToken');

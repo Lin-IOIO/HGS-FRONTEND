@@ -1,0 +1,30 @@
+.alerta {
+    box-sizing: border-box;
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+    padding: 20px 30px;
+    width: 95%;
+    max-width: 450px;
+    height: 150px;
+    background-color: white;
+    border-radius: 5px;
+}
+
+.alerta-titulo, .alerta-descripcion {
+    text-align: left;
+    padding: 0;
+    margin: 0;
+}
+
+.alerta-boton-contenedor {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.alerta-boton {
+    font-weight: bold;
+    color: white;
+    background-color: #38739C;
+    border-radius: 5px;
+}

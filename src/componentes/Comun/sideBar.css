@@ -3,13 +3,13 @@
     background-color: #3b5066;
     color: white;
     min-height: 100vh;
-    /* Ancho fijo y estrecho, ajusta según tu gusto */
     width: 100px; 
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
     align-items: center; /* Centra todo horizontalmente */
     padding-top: 20px; /* Espacio superior */
+    height: 100%;
 }
 
 /* --- ESTILOS DE LA SECCIÓN DE PERFIL --- */
@@ -38,6 +38,33 @@
     padding: 0;
     margin: 0;
     width: 100%; /* Para que los enlaces ocupen el ancho disponible */
+    flex-grow: 1; 
+    display: flex; 
+    flex-direction: column;
+}
+
+.logout-item {
+    margin-top: auto; 
+    margin-bottom: 0;
+    width: 100%;
+    border-top: 1px solid rgba(255, 255, 255, 0.2); 
+}
+
+.logout-item span.sidebar-link {
+    padding: 15px 5px;
+    color: #ffcccc; 
+    font-weight: 500;
+}
+
+/* El icono de Cerrar Sesión (fas fa-sign-out-alt) */
+.logout-item span.sidebar-link i {
+    color: #da2929; /* Rojo más intenso para el icono */
+}
+
+/* Hover para el botón de logout */
+.logout-item span.sidebar-link:hover {
+    color: white;
+    background-color: #f5565620; /* Fondo con un toque de rojo */
 }
 
 .sidebar-item {

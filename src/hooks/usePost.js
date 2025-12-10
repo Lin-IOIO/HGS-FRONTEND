@@ -1,25 +1,25 @@
-import { post } from "apis/funciones";
-import { useAuth } from "contexto/conAutenticacion";
-import { useEffect, useState } from "react";
-
-export function usePost(url, body) {
+export function usePost(url, body, handleExito, handleError) {
     const { token } = useAuth();
-    const [cargando, setCargando] = useState(true);
+    const [cargando, setCargando] = useState(false);
     const [error, setError] = useState(false);
-    const [datos, setDatos] = useState(null);
+    const [exito, setExito] = useState(false);
 
     useEffect(() => {
         if (url && body) {
-            post(url, body, token).then((datos) => {
-                setDatos(datos);
-                setCargando(false);
+            setCargando(true);
+            post(url, body, token).then(() => {
+                setExito(true);
                 setError(false);
+                setCargando(false);
+                handleExito();
             }).catch(() => {
+                setExito(false);
                 setError(true);
                 setCargando(false);
+                handleError()
             })
         }
     }, [token, body, url]);
 
-    return [datos, cargando, error];
+    return [exito, cargando, error];
 }

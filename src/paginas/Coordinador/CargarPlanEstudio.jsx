@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useLocation } from 'wouter'
+import { useNavigate } from 'react-router-dom';
 import Boton from '../../componentes/UI/Boton.jsx';
 import './CargarPlanEstudio.css';
 
 const CargarPlanEstudio = () => {
     const { idCurso } = useParams();
-    const [location] = useLocation(); 
+    const navigate = useNavigate();
     const nombreCurso = idCurso.replace('-', ' ');
     
     const nombreMateria = location.state?.nombreMateria || "Materia";

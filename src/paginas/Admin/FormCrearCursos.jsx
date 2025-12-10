@@ -1,36 +1,37 @@
 import React, { useState } from 'react';
-import { useLocation } from 'wouter';
+import { useNavigate } from 'react-router-dom';
 import Boton from '../../componentes/UI/Boton.jsx';
 import Selector from '../../componentes/UI/Selector.jsx';
 import './FormCrearCursos.css'; 
 
 const opcionesAnio = [
-    { value: '1ro', label: 'Primero' }, 
-    { value: '2do', label: 'Segundo' },
-    { value: '3ro', label: 'Tercero' },
-    { value: '4to', label: 'Cuarto' },
-    { value: '5to', label: 'Quinto' },
-    { value: '6to', label: 'Sexto' }
+    { value: 1, label: 'Primero' }, 
+    { value: 2, label: 'Segundo' },
+    { value: 3, label: 'Tercero' },
+    { value: 4, label: 'Cuarto' },
+    { value: 5, label: 'Quinto' },
+    { value: 6, label: 'Sexto' }
 ];
 
 const opcionesDivision = [
-    { value: '1ra', label: 'Primera' }, 
-    { value: '2da', label: 'Segunda' },
-    { value: '3ra', label: 'Tercera' },
-    { value: '4ta', label: 'Cuarta' },
-    { value: '5ta', label: 'Quinta' },
-    { value: '6ta', label: 'Sexta' }
+    { value: 1, label: 'Primera' }, 
+    { value: 2, label: 'Segunda' },
+    { value: 3, label: 'Tercera' },
+    { value: 4, label: 'Cuarta' },
+    { value: 5, label: 'Quinta' },
+    { value: 6, label: 'Sexta' },
+    { value: 7, label: 'Séptima' },
+    { value: 8, label: 'Octava' },
+    { value: 9, label: 'Novena' }
 ];
-
-// 1. Nuevas opciones para el Turno
 const opcionesTurno = [
-    { value: 'Mañana', label: 'Turno Mañana' },
-    { value: 'Tarde', label: 'Turno Tarde' },
-    { value: 'Vespertino', label: 'Turno Vespertino' }
+    { value: 1, label: 'Turno Mañana' },
+    { value: 2, label: 'Turno Tarde' },
+    { value: 3, label: 'Turno Vespertino' }
 ];
 
 const FormCrearCursos = () => {
-    const location = useLocation();
+    const navigate = useNavigate();
     
     const [formData, setFormData] = useState({
         anio: '1ro',

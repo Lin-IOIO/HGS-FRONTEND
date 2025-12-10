@@ -1,18 +1,21 @@
-import React from 'react'; // Quitamos useState
+import React from 'react'; 
+import { useEffect } from 'react';
 import { useParams, useLocation } from 'wouter';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { API } from 'apis/constantes.js';
+import { useGet } from 'hooks/useGet.js';
 import Boton from '../../componentes/UI/Boton.jsx'; 
 import './GestionMaterias.css';
 
-const materiasSimuladas = [
-    { id: 1, nombre: 'Matemáticas', profesor: 'Juliana Esquivero Vargas', color: '#ff7f7f' },
-    { id: 2, nombre: 'Biología', profesor: '', color: '#f8c07f' },
-    { id: 3, nombre: 'Informática', profesor: 'Marcelo Mengolini', color: '#7fdbff' },
-];
+const colores = ['#ff7f7f', '#f8c07f', '#7fdbff', '#7fffbf', '#d27fff', '#ff7fe1']
 
 const GestionMaterias = () => {
+    const urlMaterias = `${API}/materias`;
+    const [materias, loading, error] = useGet(urlMaterias, []);
+
     let { idCurso } = useParams();
     const navigate = useNavigate();
+
     
     const nombreCurso = idCurso ? idCurso.replace('-', ' ') : 'Gestión de Materias'; 
 
@@ -23,6 +26,37 @@ const GestionMaterias = () => {
     const handleModificarMateria = (materia) => {
         navigate('/admin/materias/editar', { state: { materiaAEditar: materia } });
     };
+
+    if (loading) {
+        return <div className="gestion-materias-container"><p>Cargando materias...</p></div>;
+    }
+    if (error) {
+         return (
+            <div className="inicio-cursos-container">
+                <p className="error-msg">{error}</p>
+                <Boton onClick={() => window.location.reload()}>Reintentar</Boton>
+            </div>
+        );
+    }
+
+    if (!materias || materias.length === 0) {
+        return (
+            <div className="gestion-materias-container">
+                <header className="materias-header">
+                    <h1 className="curso-titulo-grande">{nombreCurso}</h1>
+                </header>
+                <section className="materias-listado-section">
+                    <div className="materias-listado-header">
+                        <h2 className="materias-subtitulo">Materias Asignadas:</h2>
+                        <Boton onClick={handleCrearMateria} className="ui-boton-principal">
+                            <i className="fas fa-plus"></i>  Nueva Materia
+                        </Boton>
+                    </div>
+                    <p>Actualmente no hay materias asignadas.</p>
+                </section>
+            </div>
+        );
+    }
 
     return (
         <div className="gestion-materias-container">
@@ -39,9 +73,9 @@ const GestionMaterias = () => {
                 </div>
 
                 <div className="materias-grid">
-                    {materiasSimuladas.map(materia => (
+                    {materias.map((materia, index) => (
                         <div key={materia.id} className="materia-card">
-                            <div className="materia-info-header" style={{ backgroundColor: materia.color }}>
+                            <div className="materia-info-header" style={{ backgroundColor: colores[index % colores.length] }}>
                                 <span className="materia-nombre">{materia.nombre}</span>
                                 <Boton
                                     onClick={() => handleModificarMateria(materia)}

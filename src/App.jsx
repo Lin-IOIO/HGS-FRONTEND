@@ -15,12 +15,15 @@ import FormNuevaMateria from './paginas/Admin/FormNuevaMateria';
 import InicioCoordinador from './paginas/Coordinador/InicioCoordinador';
 import CargarPlanEstudio from './paginas/Coordinador/CargarPlanEstudio';
 import GestionMateriasCoordinador from './paginas/Coordinador/GestionMateriasCoordinador';
+import { AlertaProvider } from 'contexto/alerta';
 
 const App = () => {
     return (
         <Router>
             <AuthProvider>
-                <RoutesContainer />
+                <AlertaProvider>
+                    <RoutesContainer />
+                </AlertaProvider>
             </AuthProvider>
         </Router>
     );

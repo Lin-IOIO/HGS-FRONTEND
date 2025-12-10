@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useLocation } from 'wouter';
+import { useNavigate } from 'react-router-dom';
 import Input from '../../componentes/UI/Input.jsx';
 import Selector from '../../componentes/UI/Selector.jsx';
 import Boton from '../../componentes/UI/Boton.jsx';
@@ -20,7 +20,7 @@ const initialData = {
 };
 
 const GestionUsuarios = ({ alEnviarUsuario }) => {
-    const location = useLocation();
+    const navigate = useNavigate();
    
     const usuarioAEditar = location.state?.usuarioAEditar;
 
@@ -79,6 +79,7 @@ const GestionUsuarios = ({ alEnviarUsuario }) => {
                     <Input label="Email" name="email" value={formData.email} onChange={handleChange} placeholder="Email" required={true}/>
                     <Input label="Nombre" name="nombre" value={formData.nombre} onChange={handleChange} placeholder="Nombre" required={true}/>
                     <Input label="Apellido" name="apellido" value={formData.apellido} onChange={handleChange} placeholder="Apellido" required={true}/>
+                    <Input label="Contraseña" name="contraseña" value={formData.contraseña} onChange={handleChange} placeholder="Contraseña" required={true}/>
 
                   
                     <div className="form-row-dni-tipo">

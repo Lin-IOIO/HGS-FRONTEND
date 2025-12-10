@@ -4,6 +4,7 @@ import axios from 'axios';
 const AuthContext = createContext();
 
 const defaultUser = {
+    id: null,
     rol: null,
     nombre: null,
     apellido: null,
@@ -19,12 +20,14 @@ export const AuthProvider = ({ children }) => {
 
     const login = (userData) => {
         localStorage.setItem('authToken', userData.token);
+        localStorage.setItem('id', userData.user.id);   
         localStorage.setItem('rol', userData.user.rol);
         localStorage.setItem('nombre', userData.user.nombre);
         localStorage.setItem('apellido', userData.user.apellido);
         setToken(userData.token);
 
         setUser({
+            id: userData.user.id,
             rol: userData.user.rol,
             nombre: userData.user.nombre,
             apellido: userData.user.apellido,
@@ -54,6 +57,7 @@ export const AuthProvider = ({ children }) => {
 
                 if (response.status >= 200 && response.status < 300) {
                     setUser({
+                        id: response.data.user.id,
                         rol: response.data.user.rol,
                         nombre: response.data.user.nombre,
                         apellido: response.data.user.apellido,

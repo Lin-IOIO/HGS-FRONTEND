@@ -1,5 +1,6 @@
 import React from 'react';
 import { useParams, useLocation } from 'wouter';
+import { useNavigate } from 'react-router-dom';
 import Boton from '../../componentes/UI/Boton.jsx'; 
 import './GestionMateriasCoordinador.css';
 
@@ -10,11 +11,11 @@ const materiasSimuladas = [
 
 const GestionMateriasCoordinador = () => {
     const { idCurso } = useParams();
-    const location = useLocation();
+    const navigate = useNavigate();
     const nombreCurso = idCurso.replace('-', ' ');
 
     const handleGestionarPlan = (materia) => {
-        location(`/coordinador/cursos/${idCurso}/plan/${materia.id}`, {
+        navigate(`/coordinador/cursos/${idCurso}/plan/${materia.id}`, {
             state: { 
                 nombreMateria: materia.nombre,
                 archivoExistente: materia.archivoNombre

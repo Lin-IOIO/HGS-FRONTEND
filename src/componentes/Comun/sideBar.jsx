@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAuth } from '../../contexto/conAutenticacion';
-import { NavLink } from 'react-router-dom'; 
+import { NavLink, useNavigate } from 'react-router-dom'; 
 import './SideBar.css';
 
 // (Tus constantes ITEMS_ADMIN e ITEMS_COORDINADOR siguen aquí igual que antes...)
@@ -16,12 +16,12 @@ const ITEMS_COORDINADOR = [
 
 
 const SideBar = () => {
-    const { user } = useAuth();
+    const { user, logout } = useAuth();
+    const navigate = useNavigate();
 
-    // Lógica de selección de menú (igual que antes)
     let navItemsToRender = [];
     if (user) {
-        const rol = user.rol.toLowerCase();
+        const rol = user.rol;
         if (rol === 'admin' || rol === 'secretario') {
             navItemsToRender = ITEMS_ADMIN;
         } else if (rol === 'coordinador') {
@@ -29,23 +29,21 @@ const SideBar = () => {
         }
     }
 
+    const handleLogout = () => {
+        logout();
+        navigate('/');
+    }
     return (
         <nav className="sidebar">
-            {/* --- NUEVA SECCIÓN: PERFIL --- */}
             <div className="sidebar-profile-section">
-                {/* Icono grande de usuario */}
                 <i className="fas fa-user-circle profile-main-icon"></i>
-                {/* Línea divisoria */}
                 <div className="profile-separator"></div>
             </div>
-
-            {/* --- SECCIÓN DEL MENÚ (Ligeramente modificada) --- */}
             <ul className="sidebar-menu">
                 {navItemsToRender.map((item) => (
                     <li key={item.path} className="sidebar-item">
                         <NavLink 
                             to={item.path} 
-                            // Quitamos la lógica de 'active' compleja por ahora para limpiar el diseño
                             className={({ isActive }) => 
                                 isActive ? 'sidebar-link active' : 'sidebar-link'
                             }
@@ -55,6 +53,15 @@ const SideBar = () => {
                         </NavLink>
                     </li>
                 ))}
+                <li className="sidebar-item logout-item">
+                    <span
+                        onClick={handleLogout} 
+                        className="sidebar-link" 
+                    >
+                        <i className="fas fa-sign-out-alt"></i>
+                        <span>Cerrar Sesión</span>
+                    </span>
+                </li>
             </ul>
         </nav>
     );
