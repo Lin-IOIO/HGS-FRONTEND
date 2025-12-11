@@ -69,6 +69,7 @@
     position: relative;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     cursor: pointer;
 }
 
@@ -109,12 +110,51 @@
     padding: 0 15px;
     height: 35px; /* Altura fija para el pie */
     display: flex;
+    justify-content: space-between; 
+    padding-top: 10px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1); /* Separador visual */
     align-items: center;
     color: #707070;
     font-size: 0.85em;
     margin-top: auto; 
     width: 100%;
     box-sizing: border-box;
+}
+
+.card-acciones {
+    display: flex;
+    gap: 10px; 
+}
+
+.icono-accion {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    font-size: 1.2rem; 
+    transition: color 0.2s ease, opacity 0.2s ease;
+    z-index: 10; 
+}
+
+.icono-accion:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.icono-editar {
+    color: #007bff; /* Azul */
+}
+
+.icono-eliminar {
+    color: #dc3545; /* Rojo */
+}
+
+.icono-editar:hover {
+    color: #0056b3;
+}
+
+.icono-eliminar:hover {
+    color: #c82333;
 }
 
 .no-cursos-msg {

@@ -4,23 +4,14 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './InicioCoordinador.css'; 
 
-const cursosSimulados = [
-    // { id: '2do-3ra', nombre: '2do 3ra', materiasSinPlan: 1, color: '#ffcc80', turno: 'Mañana' },
-    // { id: '5to-1ra', nombre: '5to 1ra', materiasSinPlan: 0, color: '#ff9999', turno: 'Tarde' },
-    // { id: '1ro-8va', nombre: '1ro 8va', materiasSinPlan: 0, color: '#b3a0ff', turno: 'Vespertino' },
-    // { id: '2do-4ta', nombre: '2do 4ta', materiasSinPlan: 2, color: '#e699ff', turno: 'Mañana' },
-    // { id: '5to-3ra', nombre: '5to 3ra', materiasSinPlan: 1, color: '#99ff99', turno: 'Tarde' },
-    {id: "", año:"", division:"", turno:""}
-];
-
-const getCursos = async () => {
-    try {
-        const res = await axios.get(URL);
-    }
-    catch {
-
-    }
-}
+// const cursosSimulados = [
+//     // { id: '2do-3ra', nombre: '2do 3ra', materiasSinPlan: 1, color: '#ffcc80', turno: 'Mañana' },
+//     // { id: '5to-1ra', nombre: '5to 1ra', materiasSinPlan: 0, color: '#ff9999', turno: 'Tarde' },
+//     // { id: '1ro-8va', nombre: '1ro 8va', materiasSinPlan: 0, color: '#b3a0ff', turno: 'Vespertino' },
+//     // { id: '2do-4ta', nombre: '2do 4ta', materiasSinPlan: 2, color: '#e699ff', turno: 'Mañana' },
+//     // { id: '5to-3ra', nombre: '5to 3ra', materiasSinPlan: 1, color: '#99ff99', turno: 'Tarde' },
+//     {id: "", año:"", division:"", turno:""}
+// ];
 
 const InicioCoordinador = () => {
     const navigate = useNavigate();

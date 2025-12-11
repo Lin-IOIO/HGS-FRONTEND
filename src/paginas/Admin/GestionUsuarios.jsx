@@ -1,6 +1,7 @@
 import React, { useState, useEffect  } from 'react';
 import { API } from 'apis/constantes.js';
 import { useGet } from 'hooks/useGet.js';
+import { useDelete } from '../../hooks/useDelete';
 import { useNavigate } from 'react-router-dom';
 import Boton from '../../componentes/UI/Boton';
 import './GestionUsuarios.css'; 
@@ -9,7 +10,7 @@ const GestionUsuarios = () => {
 
     const urlUsuarios = `${API}/usuarios`;
     const [dataUsuarios, loading, error] = useGet(urlUsuarios, []);
-    
+    const { ejecutarEliminacion, cargando: eliminando, error: errorEliminar } = useDelete();
     const [usuarios, setUsuarios] = useState([]);
 
     const navigate = useNavigate();
@@ -17,8 +18,6 @@ const GestionUsuarios = () => {
     const [modalAbierto, setModalAbierto] = useState(false);
     const [usuarioAEliminar, setUsuarioAEliminar] = useState(null);
     const [mensajeExito, setMensajeExito] = useState(false);
-
-    console.log("Datos de usuarios obtenidos:", dataUsuarios)
 
     useEffect(() => {
         if (dataUsuarios) {
@@ -32,26 +31,32 @@ const GestionUsuarios = () => {
     };
 
    
-    const handleConfirmarEliminacion = () => {
+ const handleConfirmarEliminacion = async () => {
+        if (!usuarioAEliminar) return;
+
         console.log(`Eliminando usuario con ID: ${usuarioAEliminar.id}`);
-        const nuevaLista = usuarios.filter(u => u.id !== usuarioAEliminar.id);
-        setUsuarios(nuevaLista);
+        const urlParaBorrar = `${API}/usuarios/${usuarioAEliminar.id}`;
+        const exito = await ejecutarEliminacion(urlParaBorrar);
 
-        setModalAbierto(false);
-        setUsuarioAEliminar(null);
-        setMensajeExito(true);
+        if (exito) {
+            const nuevaLista = usuarios.filter(u => u.id !== usuarioAEliminar.id);
+            setUsuarios(nuevaLista);
+            setMensajeExito(true);
+            setModalAbierto(false);
+            setUsuarioAEliminar(null);
 
-  
-        setTimeout(() => {
-            setMensajeExito(false);}, 3000);
+            setTimeout(() => {
+                setMensajeExito(false);
+            }, 3000);
+        } else {
+            console.error("No se pudo eliminar el usuario");
+        }
     };
-
     const handleCancelarEliminacion = () => {
         setModalAbierto(false);
         setUsuarioAEliminar(null);
     };
 
-    // Funciones existentes
     const handleAgregarUsuario = () => {
         navigate('/admin/usuarios/crear');
     };
@@ -108,8 +113,8 @@ const GestionUsuarios = () => {
                     <div key={usuario.id} className="usuario-card">
                         <p className="usuario-rol">{usuario.rol}</p>
                         <h3 className="usuario-nombre">{usuario.nombre} {usuario.apellido}</h3>
-                        <p className="usuario-dato">DNI: {usuario.dni}</p>
-                        <p className="usuario-dato">Email: {usuario.email}</p>
+                        <p className="usuario-dato">DNI: {usuario.documento}</p>
+                        <p className="usuario-dato">Email: {usuario.correo}</p>
                         
                         <div className="card-actions">
                             <button 

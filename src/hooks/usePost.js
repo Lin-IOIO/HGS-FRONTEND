@@ -1,25 +1,28 @@
-export function usePost(url, body, handleExito, handleError) {
+import { useAuth } from "contexto/conAutenticacion";
+import { useState } from "react";
+import { post } from "apis/funciones"
+
+export function usePost() {
     const { token } = useAuth();
     const [cargando, setCargando] = useState(false);
-    const [error, setError] = useState(false);
-    const [exito, setExito] = useState(false);
+    const [error, setError] = useState(null);
+    const [datosRespuesta, setDatosRespuesta] = useState(null); 
 
-    useEffect(() => {
-        if (url && body) {
-            setCargando(true);
-            post(url, body, token).then(() => {
-                setExito(true);
-                setError(false);
-                setCargando(false);
-                handleExito();
-            }).catch(() => {
-                setExito(false);
-                setError(true);
-                setCargando(false);
-                handleError()
-            })
+    const ejecutarPost = async (url, body) => {
+        setCargando(true);
+        setError(null);
+        setDatosRespuesta(null);
+
+        try {
+            const respuesta = await post(url, body, token); 
+            setDatosRespuesta(respuesta);
+            setCargando(false);
+            return { exito: true, data: respuesta };
+        } catch (err) {
+            setError(err);
+            setCargando(false);
+            return { exito: false, error: err };
         }
-    }, [token, body, url]);
-
-    return [exito, cargando, error];
+    };
+    return { ejecutarPost, cargando, error, datosRespuesta };
 }
