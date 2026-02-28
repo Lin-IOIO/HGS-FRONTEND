@@ -20,6 +20,7 @@ const GestionMaterias = () => {
     const [mensajeExito, setMensajeExito] = useState(false);
 
     let { idCurso } = useParams();
+    console.log(useParams(idCurso));
     const navigate = useNavigate();
     const nombreCurso = idCurso ? idCurso.replace('-', ' ') : 'Gestión de Materias';
 
@@ -30,7 +31,7 @@ const GestionMaterias = () => {
     }, [materias]);
 
     const handleCrearMateria = () => {
-        navigate('/admin/materias/crear');
+        navigate(`/admin/materias/${idCurso2}/crear`);
     };
 
     const handleModificarMateria = (materia) => {

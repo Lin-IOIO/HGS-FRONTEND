@@ -13,7 +13,7 @@ const RutaProtegida = ({ children, rolesPermitidos }) => {
 
     if (rolesPermitidos && !rolesPermitidos.includes(user.rol)) {
         const rutasDeInicio = {
-            'coordinador': '/coordinador/inicio',
+            'Coordinador': '/coordinador/inicio',
             'admin': '/admin/inicio',
             'profesor': '/docente/inicio', 
             'default': '/login' 

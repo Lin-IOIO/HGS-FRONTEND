@@ -67,8 +67,8 @@ const GestionUsuarios = () => {
 
     const usuariosFiltrados = usuarios.filter(usuario => 
         (usuario.nombre + ' ' + usuario.apellido).includes(busqueda) ||
-        usuario.dni.includes(busqueda) ||
-        usuario.email.toLowerCase().includes(busqueda)
+        usuario.nombre.includes(busqueda) ||
+        usuario.apellido.toLowerCase().includes(busqueda)
     );
 
     if (loading) {
@@ -93,7 +93,7 @@ const GestionUsuarios = () => {
             )}
             
             <h1 className="titulo-usuarios">Lista de Usuarios</h1>
-            <div className="barra-busqueda-container">
+            {/* <div className="barra-busqueda-container">
                 <div className="input-wrapper">
                     <span className="search-placeholder">Buscar</span>
                     <i className="fas fa-search search-icon"></i>
@@ -104,7 +104,7 @@ const GestionUsuarios = () => {
                         onChange={(e) => setBusqueda(e.target.value)}
                     />
                 </div>
-            </div>
+            </div> */}
 
             <hr className="divisor-usuarios" />
 

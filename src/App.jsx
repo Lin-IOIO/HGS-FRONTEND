@@ -39,7 +39,7 @@ const RutasAdminYSecretario = () => {
             <Route path="usuarios/editar" element={<FormCrearUsuario />} />
             <Route path="cursos/crear" element={<FormCrearCursos />} />
             <Route path="cursos/:idCurso" element={<GestionMaterias />} />
-            <Route path="materias/crear" element={<FormNuevaMateria />} />
+            <Route path="materias/:idCurso/crear" element={<FormNuevaMateria />} />
             <Route path="materias/editar" element={<FormNuevaMateria />} />
             <Route path="usuarios" element={<TableroAdmin vista="usuarios" />} />
             <Route path="/" element={<Navigate to="inicio" replace />} />

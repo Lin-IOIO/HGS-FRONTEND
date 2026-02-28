@@ -11,6 +11,7 @@ import Notificacion from '../../componentes/UI/Notificacion.jsx';
 const PROFESOR_NO_ASIGNADO = 'No Asignado';
 
 const FormNuevaMateria = () => {
+    console.log();
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -32,6 +33,7 @@ const FormNuevaMateria = () => {
     const [notificacion, setNotificacion] = useState(null);
 
     // ⚠️ Asegúrate de que este ID se pase correctamente al componente
+    console.log("Curso ID desde la ubicación:", location.state?.cursoId);
     const [cursoId, setCursoId] = useState(location.state?.cursoId || 17); 
 
     const profesoresFiltrados = dataProfesores?.filter((profesor) => {

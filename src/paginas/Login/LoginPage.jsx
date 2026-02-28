@@ -27,7 +27,7 @@ const loginUser = async (dni, password) => {
 };
 
 const ROLE_REDIRECTS = {
-    'coordinador': '/coordinador/inicio',
+    'Coordinador': '/coordinador/inicio',
     'docente': '/docente/inicio',
     'admin': '/admin/inicio',
 };

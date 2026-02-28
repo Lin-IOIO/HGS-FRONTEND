@@ -12,6 +12,7 @@ const colores = ['#f8c87f', '#f57e84', '#a68ee8', '#e88ee8', '#a8f599'];
 const InicioCursos = () => {
     const urlCursos = `${API}/cursos`;
     const [dataCursos, loading, error] = useGet(urlCursos, []); 
+    console.log()
     
     const navigate = useNavigate();
     const { alerta } = useAlerta();
@@ -29,6 +30,7 @@ const InicioCursos = () => {
     
     const handleCardClick = (curso) => {
         navigate(`/admin/cursos/${curso.id}`);
+        
     };
 
     const handleEditar = (e, curso) => {
