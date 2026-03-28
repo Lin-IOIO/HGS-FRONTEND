@@ -5,7 +5,6 @@ import LoginPage from './paginas/Login/LoginPage';
 import RutaProtegida from './componentes/Enrutamiento/RutaProtegida';
 import DisposicionPrincipal from './componentes/Comun/DisposicionPrincipal';
 
-// --- Imports de Páginas ---
 import TableroAdmin from './paginas/Admin/TableroAdmin';
 import GestionMaterias from './paginas/Admin/GestionMaterias';
 import GestionUsuarios from './paginas/Admin/GestionUsuarios';
