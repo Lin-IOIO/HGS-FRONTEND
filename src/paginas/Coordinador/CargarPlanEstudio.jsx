@@ -1,125 +1,135 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useLocation } from 'wouter'
-import { useNavigate } from 'react-router-dom';
+import React, { useMemo, useState, useEffect } from 'react';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
+import { API } from '../../apis/constantes.js';
+import { useGet } from '../../hooks/useGet.js';
+import { usePost } from '../../hooks/usePost.js';
+import { usePut } from '../../hooks/usePut.js';
+import { useAuth } from '../../contexto/conAutenticacion';
 import Boton from '../../componentes/UI/Boton.jsx';
 import './CargarPlanEstudio.css';
 
 const CargarPlanEstudio = () => {
-    const { idCurso } = useParams();
+    const { idCurso, idCursoMateria } = useParams();
     const navigate = useNavigate();
-    const nombreCurso = idCurso.replace('-', ' ');
-    
-    const nombreMateria = location.state?.nombreMateria || "Materia";
-    const archivoInicial = location.state?.archivoExistente || null;
+    const location = useLocation();
+    const { user } = useAuth();
 
-    const [archivo, setArchivo] = useState(null);
-    const [archivoExistente, setArchivoExistente] = useState(archivoInicial);
-    const [isDragging, setIsDragging] = useState(false);
+    const nombreMateria = location.state?.nombreMateria || "Materia";
+
+    const urlPlanes = `${API}/planes`;
+    const [planes, loadingPlanes, errorPlanes] = useGet(urlPlanes, []);
+
+    const planExistente = useMemo(() => {
+        if (!Array.isArray(planes)) return null;
+        return planes.find((plan) => plan.id_curso_materia === Number(idCursoMateria)) || null;
+    }, [planes, idCursoMateria]);
+
+    const [linkDescarga, setLinkDescarga] = useState('');
+
+    const { ejecutarPost, cargando: creando } = usePost();
+    const { ejecutarPut, cargando: actualizando } = usePut();
+
+    const fechaHoy = new Date().toISOString().slice(0, 10);
 
     useEffect(() => {
-        setArchivoExistente(location.state?.archivoExistente);
-    }, [location.state]);
+        setLinkDescarga(planExistente?.link_descarga || '');
+    }, [planExistente]);
 
-    const handleDragEnter = (e) => { e.preventDefault(); e.stopPropagation(); setIsDragging(true); };
-    const handleDragLeave = (e) => { e.preventDefault(); e.stopPropagation(); setIsDragging(false); };
-    const handleDragOver = (e) => { e.preventDefault(); e.stopPropagation(); };
-    
-    const handleDrop = (e) => {
-        e.preventDefault(); e.stopPropagation(); setIsDragging(false);
-        if (e.dataTransfer.files && e.dataTransfer.files[0]) setArchivo(e.dataTransfer.files[0]);
+    const buildDriveDownloadLink = (rawLink) => {
+        const cleaned = String(rawLink || '').trim();
+        if (!cleaned) return '';
+
+        if (!cleaned.includes('drive.google.com')) {
+            return cleaned;
+        }
+
+        // Formato: https://drive.google.com/file/d/<ID>/view?...
+        const fileMatch = cleaned.match(/\/file\/d\/([^/]+)/i);
+        if (fileMatch && fileMatch[1]) {
+            return `https://drive.google.com/uc?export=download&id=${fileMatch[1]}`;
+        }
+
+        // Formato: https://drive.google.com/open?id=<ID>
+        const openMatch = cleaned.match(/[?&]id=([^&]+)/i);
+        if (openMatch && openMatch[1]) {
+            return `https://drive.google.com/uc?export=download&id=${openMatch[1]}`;
+        }
+
+        return cleaned;
     };
 
-    const handleFileChange = (e) => {
-        if (e.target.files && e.target.files[0]) setArchivo(e.target.files[0]);
-    };
+    const handleGuardar = async () => {
+        if (!linkDescarga) return;
+        const linkFinal = buildDriveDownloadLink(linkDescarga);
 
-    const handleUpload = () => {
-        if (archivo) {
-            console.log(`Reemplazando/Subiendo plan para ${nombreMateria}:`, archivo.name);
-            alert(`Archivo ${archivo.name} subido con éxito.`);
-         
-            setArchivoExistente(archivo.name); 
-            setArchivo(null);
+        const payload = {
+            id_curso_materia: Number(idCursoMateria),
+            id_coordinador: user.id,
+            link_descarga: linkFinal,
+            fecha_carga: fechaHoy,
+        };
+
+        let resultado;
+        if (planExistente) {
+            resultado = await ejecutarPut(`${API}/planes/${planExistente.id}`, payload);
+        } else {
+            resultado = await ejecutarPost(`${API}/planes`, payload);
+        }
+
+        if (resultado.exito) {
+            navigate(-1);
         }
     };
 
-    const handleEliminarExistente = () => {
-        if(window.confirm("¿Estás seguro de que quieres eliminar el plan de estudio actual?")){
-            console.log("Eliminando archivo:", archivoExistente);
-            setArchivoExistente(null); 
-        }
-    };
+    if (loadingPlanes) {
+        return <div className="cargar-plan-container"><p>Cargando...</p></div>;
+    }
+
+    if (errorPlanes) {
+        return <div className="cargar-plan-container"><p>Error al cargar el plan.</p></div>;
+    }
 
     return (
         <div className="cargar-plan-container">
             <h1 className="plan-titulo">
-                {archivoExistente ? "Modificar Plan de Estudio" : "Cargar Plan de Estudio"}
+                {planExistente ? "Modificar Plan de Estudio" : "Cargar Plan de Estudio"}
                 <br/>
-                <span style={{fontSize: '0.6em', color: '#666'}}>{nombreMateria} - {nombreCurso}</span>
+                <span style={{fontSize: '0.6em', color: '#666'}}>{nombreMateria} - Curso {idCurso}</span>
             </h1>
             
-            {archivoExistente && (
+            {planExistente && (
                 <div className="archivo-existente-card">
                     <div className="info-archivo">
-                        <i className="fas fa-file-pdf archivo-icon"></i>
+                        <i className="fas fa-link archivo-icon"></i>
                         <div className="datos">
-                            <p className="label">Archivo Actual:</p>
-                            <p className="nombre">{archivoExistente}</p>
+                            <p className="label">Link Actual:</p>
+                            <p className="nombre">{planExistente.link_descarga}</p>
                         </div>
                     </div>
                     <div className="acciones-archivo">
-                        <button className="btn-descargar-mini" title="Descargar actual">
-                            <i className="fas fa-download"></i>
-                        </button>
                         <button 
-                            className="btn-eliminar-mini" 
-                            onClick={handleEliminarExistente}
-                            title="Eliminar archivo"
+                            className="btn-descargar-mini" 
+                            title="Abrir link" 
+                            onClick={() => window.open(planExistente.link_descarga, '_blank')}
                         >
-                            <i className="fas fa-trash-alt"></i>
+                            <i className="fas fa-external-link-alt"></i>
                         </button>
                     </div>
                 </div>
             )}
-            <div className="upload-section">
-                {archivoExistente && <p className="upload-instruction">Para reemplazar el plan actual, sube uno nuevo:</p>}
-                
-                <input 
-                    type="file" id="fileInput" accept=".pdf" 
-                    onChange={handleFileChange} style={{ display: 'none' }}
-                />
-                
-                <label htmlFor="fileInput">
-                    <Boton className="ui-boton-principal">
-                        <i className="fas fa-plus"></i> Elige un Archivo
-                    </Boton>
-                </label>
-                
-                {!archivo && <p className="upload-o">O...</p>}
-                
-                <div 
-                    className={`drop-area ${isDragging ? 'is-dragging' : ''}`}
-                    onDragEnter={handleDragEnter} onDragLeave={handleDragLeave}
-                    onDragOver={handleDragOver} onDrop={handleDrop}
-                >
-                    {archivo ? (
-                        <div className="nuevo-archivo-preview">
-                            <i className="fas fa-file-upload"></i>
-                            <p>Listo para subir: <strong>{archivo.name}</strong></p>
-                        </div>
-                    ) : (
-                        <div className="drop-placeholder">
-                            <i className="fas fa-cloud-upload-alt drop-icon"></i>
-                            <p>Arrastra tu archivo aqui</p>
-                        </div>
-                    )}
-                </div>
 
-                {archivo && (
-                    <Boton onClick={handleUpload} className="btn-subir-archivo">
-                        {archivoExistente ? "Reemplazar Archivo" : "Subir Plan"}
-                    </Boton>
-                )}
+            <div className="upload-section">
+                <label className="upload-instruction">URL del plan de estudio</label>
+                <input
+                    type="url"
+                    className="form-input-materia"
+                    placeholder="https://..."
+                    value={linkDescarga}
+                    onChange={(e) => setLinkDescarga(e.target.value)}
+                />
+                <Boton onClick={handleGuardar} className="btn-subir-archivo" disabled={creando || actualizando || !linkDescarga}>
+                    {planExistente ? "Guardar Cambios" : "Subir Plan"}
+                </Boton>
             </div>
         </div>
     );

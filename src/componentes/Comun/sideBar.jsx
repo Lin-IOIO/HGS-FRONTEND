@@ -14,6 +14,9 @@ const ITEMS_COORDINADOR = [
     { name: 'Inicio', path: '/coordinador/inicio', icon: 'fas fa-home' },
 ];
 
+const ITEMS_PROFESOR = [
+    { name: 'Inicio', path: '/profesor/inicio', icon: 'fas fa-home' },
+];
 
 const SideBar = () => {
     const { user, logout } = useAuth();
@@ -22,10 +25,12 @@ const SideBar = () => {
     let navItemsToRender = [];
     if (user) {
         const rol = user.rol;
-        if (rol === 'admin' || rol === 'secretario') {
+        if (rol === 'admin') {
             navItemsToRender = ITEMS_ADMIN;
         } else if (rol === 'coordinador') {
             navItemsToRender = ITEMS_COORDINADOR;
+        } else if (rol === 'profesor') {
+            navItemsToRender = ITEMS_PROFESOR;
         }
     }
 

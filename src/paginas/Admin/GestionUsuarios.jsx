@@ -65,10 +65,11 @@ const GestionUsuarios = () => {
         navigate('/admin/usuarios/editar', { state: { usuarioAEditar: usuario } });
     };
 
+    const criterio = busqueda.toLowerCase();
     const usuariosFiltrados = usuarios.filter(usuario => 
-        (usuario.nombre + ' ' + usuario.apellido).includes(busqueda) ||
-        usuario.nombre.includes(busqueda) ||
-        usuario.apellido.toLowerCase().includes(busqueda)
+        (`${usuario.nombre} ${usuario.apellido}`.toLowerCase().includes(criterio)) ||
+        (usuario.nombre || '').toLowerCase().includes(criterio) ||
+        (usuario.apellido || '').toLowerCase().includes(criterio)
     );
 
     if (loading) {
@@ -113,8 +114,8 @@ const GestionUsuarios = () => {
                     <div key={usuario.id} className="usuario-card">
                         <p className="usuario-rol">{usuario.rol}</p>
                         <h3 className="usuario-nombre">{usuario.nombre} {usuario.apellido}</h3>
-                        <p className="usuario-dato">DNI: {usuario.documento}</p>
-                        <p className="usuario-dato">Email: {usuario.correo}</p>
+                        <p className="usuario-dato">DNI: {usuario.DNI}</p>
+                        <p className="usuario-dato">Email: {usuario.correo_electronico}</p>
                         
                         <div className="card-actions">
                             <button 

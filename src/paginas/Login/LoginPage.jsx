@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useLocation } from 'wouter';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexto/conAutenticacion';
 import './LoginPage.css';
 import axios from 'axios';
@@ -9,7 +9,7 @@ const API_LOGIN_URL = 'http://localhost:5000/api/login';
 
 const loginUser = async (dni, password) => {
     try {
-        const body = { documento: dni, password };
+        const body = { DNI: dni, contrasena: password };
         const response = await axios.post(API_LOGIN_URL, body, {
             headers: { 'Content-Type': 'application/json' }
         });
@@ -23,9 +23,8 @@ const loginUser = async (dni, password) => {
 // CORREGIDO: todas las claves en minúscula, consistente con el resto del sistema
 const ROLE_REDIRECTS = {
     'coordinador': '/coordinador/inicio',
-    'docente': '/docente/inicio',
+    'profesor': '/profesor/inicio',
     'admin': '/admin/inicio',
-    'secretario': '/admin/inicio',
 };
 
 export default function LoginPage() {
@@ -33,7 +32,7 @@ export default function LoginPage() {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const [, setLocation] = useLocation();
+    const navigate = useNavigate();
     const { login } = useAuth();
 
     const handleLogin = async (e) => {
@@ -47,9 +46,11 @@ export default function LoginPage() {
             const decode = jwtDecode(token);
             const rol = decode.data.rol;
             const id = decode.data.id;
-            const nombre = decode.data.nombre;
-            const apellido = decode.data.apellido;
-            const titulo = decode.data.titulo;
+            const nombreCompleto = decode.data.usuario || '';
+            const partes = nombreCompleto.trim().split(' ');
+            const nombre = partes.shift() || '';
+            const apellido = partes.join(' ').trim();
+            const titulo = rol;
 
             // CORREGIDO: login() en conAutenticacion ya maneja el localStorage internamente,
             // no hace falta duplicar los setItem aquí
@@ -61,7 +62,7 @@ export default function LoginPage() {
             const redirectPath = ROLE_REDIRECTS[rol];
 
             if (redirectPath) {
-                setLocation(redirectPath);
+                navigate(redirectPath);
             } else {
                 setError(`Rol de usuario no reconocido: ${rol}`);
             }

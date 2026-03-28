@@ -5,7 +5,6 @@ import Selector from '../../componentes/UI/Selector.jsx';
 import { API } from '../../apis/constantes.js';
 import { usePost } from '../../hooks/usePost.js';
 import { usePut } from '../../hooks/usePut.js';
-import { useAuth } from '../../contexto/conAutenticacion';
 import { useAlerta } from '../../contexto/alerta.jsx';
 import './FormCrearCursos.css';
 
@@ -30,15 +29,14 @@ const opcionesDivision = [
     { value: 9, label: 'Novena' }
 ];
 const opcionesTurno = [
-    { value: 1, label: 'Turno Mañana' },
-    { value: 2, label: 'Turno Tarde' },
-    { value: 3, label: 'Turno Vespertino' }
+    { value: 'Mañana', label: 'Turno Mañana' },
+    { value: 'Tarde', label: 'Turno Tarde' },
+    { value: 'Vespertino', label: 'Turno Vespertino' }
 ];
 
 const FormCrearCursos = () => {
     const navigate = useNavigate();
     const { alerta } = useAlerta();
-    const { user } = useAuth();
     const location = useLocation();
 
     const cursoAEditar = location.state?.cursoAEditar;
@@ -47,17 +45,18 @@ const FormCrearCursos = () => {
     const { ejecutarPut, cargando: editando, error: errorPut } = usePut();
 
     const [formData, setFormData] = useState(cursoAEditar ? {
-        año: cursoAEditar.anio_id,
+        anio: cursoAEditar.anio_id,
         division: cursoAEditar.division_id,
         turno: cursoAEditar.turno_id,
     } : {
-        año: 1,
+        anio: 1,
         division: 1,
-        turno: 1,
+        turno: 'Mañana',
     });
+
     const handleChange = (e) => {
         const { name, value } = e.target;
-        const valorAjustado = ['año', 'division', 'turno'].includes(name) ? Number(value) : value;
+        const valorAjustado = ['anio', 'division'].includes(name) ? Number(value) : value;
         setFormData(prev => ({ ...prev, [name]: valorAjustado }));
     };
 
@@ -66,10 +65,9 @@ const FormCrearCursos = () => {
         const esEditando = !!cursoAEditar;
 
         const datosCurso = {
-            año: formData.año,
+            anio: formData.anio,
             division: formData.division,
             turno: formData.turno,
-            creado_por_id_admin: user.id,
         };
 
         let url;
@@ -79,13 +77,12 @@ const FormCrearCursos = () => {
         if (esEditando) {
             url = `${API}/cursos/${cursoAEditar.id}`;
             ejecutarAccion = ejecutarPut;
-            mensajeExito = `Curso ${formData.año}º ${formData.division}ª modificado.`;
+            mensajeExito = `Curso ${formData.anio}º ${formData.division}ª modificado.`;
         } else {
             url = `${API}/cursos`;
             ejecutarAccion = ejecutarPost;
-            mensajeExito = `Curso ${formData.año}º ${formData.division}ª creado con éxito.`;
+            mensajeExito = `Curso ${formData.anio}º ${formData.division}ª creado con éxito.`;
         }
-
 
         const resultado = await ejecutarAccion(url, datosCurso);
         if (resultado.exito) {
@@ -124,8 +121,8 @@ const FormCrearCursos = () => {
                 <div className="form-row-anio-division">
                     <Selector
                         label="Año"
-                        name="año"
-                        value={formData.año}
+                        name="anio"
+                        value={formData.anio}
                         onChange={handleChange}
                         options={opcionesAnio}
                         required={true}

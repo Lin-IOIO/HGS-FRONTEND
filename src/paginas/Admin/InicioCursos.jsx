@@ -142,7 +142,7 @@ const InicioCursos = () => {
                                 <span className="curso-turno">{curso.turno}</span>
                             </div>
                             <div className="card-footer">
-                                <p>Materias asignadas: {curso.materias ? curso.materias.length : 0}</p>
+                                <p>Materias asignadas: {curso.materias ?? 0}</p>
 
                                 <div className="card-acciones">
                                     <button

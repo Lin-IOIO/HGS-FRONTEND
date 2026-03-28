@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import { API } from '../../apis/constantes.js';
 import { usePost } from '../../hooks/usePost.js';
 import { usePut } from '../../hooks/usePut.js';
@@ -8,15 +8,13 @@ import Boton from '../../componentes/UI/Boton.jsx';
 import './FormNuevaMateria.css';
 import Notificacion from '../../componentes/UI/Notificacion.jsx';
 
-const PROFESOR_NO_ASIGNADO = 'No Asignado';
-
 const FormNuevaMateria = () => {
-    console.log();
     const navigate = useNavigate();
     const location = useLocation();
+    const { idCurso } = useParams();
 
-    const urlAsignaturas = `${API}/asignaturas`;
-    const [dataAsignaturas, loadingAsignaturas, errorAsignaturas] = useGet(urlAsignaturas, []);
+    const urlMaterias = `${API}/materias`;
+    const [dataMaterias, loadingMaterias, errorMaterias] = useGet(urlMaterias, []);
 
     const urlProfesores = `${API}/usuarios/profesores`; 
     const [dataProfesores, loadingProfesores, errorProfesores] = useGet(urlProfesores, []);
@@ -27,14 +25,10 @@ const FormNuevaMateria = () => {
     const materiaAEditar = location.state?.materiaAEditar; 
     const modoEdicion = !!materiaAEditar;
 
-    const [asignaturaId, setAsignaturaId] = useState(materiaAEditar?.asignatura_id || '');
-    const [profesorAsignadoId, setProfesorAsignadoId] = useState(materiaAEditar?.id_profesor_asignado || ''); 
+    const [materiaId, setMateriaId] = useState(materiaAEditar?.id_materia || '');
+    const [profesorAsignadoId, setProfesorAsignadoId] = useState(materiaAEditar?.id_profesor || ''); 
     const [busquedaProfesor, setBusquedaProfesor] = useState('');
     const [notificacion, setNotificacion] = useState(null);
-
-    // ⚠️ Asegúrate de que este ID se pase correctamente al componente
-    console.log("Curso ID desde la ubicación:", location.state?.cursoId);
-    const [cursoId, setCursoId] = useState(location.state?.cursoId || 17); 
 
     const profesoresFiltrados = dataProfesores?.filter((profesor) => {
         const nombreCompleto = `${profesor.nombre} ${profesor.apellido}`.toLowerCase();
@@ -49,22 +43,35 @@ const FormNuevaMateria = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const finalAsignaturaId = asignaturaId; 
-
-        if (!finalAsignaturaId) {
+        const cursoIdFinal = Number(idCurso || location.state?.cursoId || materiaAEditar?.id_curso);
+        if (!cursoIdFinal) {
             setNotificacion({
-                mensaje: 'Debe seleccionar una materia (asignatura).',
+                mensaje: 'No se pudo determinar el curso.',
                 tipo: 'error',
             });
             return;
         }
-        
-        const idProfesorFinal = profesorAsignadoId === PROFESOR_NO_ASIGNADO ? null : profesorAsignadoId;
+
+        if (!materiaId) {
+            setNotificacion({
+                mensaje: 'Debe seleccionar una materia.',
+                tipo: 'error',
+            });
+            return;
+        }
+
+        if (!profesorAsignadoId) {
+            setNotificacion({
+                mensaje: 'Debe seleccionar un profesor.',
+                tipo: 'error',
+            });
+            return;
+        }
 
         const datosMateria = {
-            asignatura_id: finalAsignaturaId,
-            pertenece_a_id_curso: cursoId,
-            id_profesor_asignado: idProfesorFinal,
+            id_materia: Number(materiaId),
+            id_curso: cursoIdFinal,
+            id_profesor: Number(profesorAsignadoId),
         };
 
         let exito = false;
@@ -72,14 +79,14 @@ const FormNuevaMateria = () => {
         let mensajeError = '';
 
         if (modoEdicion) {
-            const url = `${API}/materias/${materiaAEditar.id}`; 
+            const url = `${API}/curso-materias/${materiaAEditar.id}`; 
             exito = await ejecutarPut(url, datosMateria);
             mensajeExito = 'Materia modificada exitosamente.';
             mensajeError = errorActualizar?.message || 'Error al actualizar la materia.';
         } else {
-            const url = `${API}/materias`; 
+            const url = `${API}/curso-materias`; 
             exito = await ejecutarPost(url, datosMateria);
-            mensajeExito = `Materia creada y profesor ${idProfesorFinal ? 'asignado' : 'no asignado'} exitosamente.`;
+            mensajeExito = 'Materia asignada exitosamente.';
             mensajeError = errorCrear?.message || 'Error al crear la materia.';
         }
 
@@ -97,24 +104,19 @@ const FormNuevaMateria = () => {
         setProfesorAsignadoId(profesor.id);
         setBusquedaProfesor(`${profesor.nombre} ${profesor.apellido}`);
     };
-
-    const handleNoAsignado = () => {
-        setProfesorAsignadoId(null);
-        setBusquedaProfesor(PROFESOR_NO_ASIGNADO);
-    }
     
     const handleCancelar = () => {
         navigate(-1); 
     };
 
-    if (loadingAsignaturas || loadingProfesores || creando || actualizando) {
+    if (loadingMaterias || loadingProfesores || creando || actualizando) {
         return <div className="nueva-materia-container"><p>Cargando datos...</p></div>;
     }
 
-    if (errorAsignaturas || errorProfesores) {
+    if (errorMaterias || errorProfesores) {
         return (
             <div className="nueva-materia-container">
-                <p className="error-msg">Error al cargar datos: {errorAsignaturas || errorProfesores}</p>
+                <p className="error-msg">Error al cargar datos: {errorMaterias || errorProfesores}</p>
                 <Boton onClick={() => window.location.reload()}>Reintentar</Boton>
             </div>
         );
@@ -137,48 +139,40 @@ const FormNuevaMateria = () => {
                 
                 <form onSubmit={handleSubmit}>
                     <div className="form-group-materia">
-                        <label htmlFor="materia">Materia (Asignatura)</label>
+                        <label htmlFor="materia">Materia</label>
                         <select
                             id="materia"
-                            value={asignaturaId}
-                            onChange={(e) => setAsignaturaId(e.target.value)}
+                            value={materiaId}
+                            onChange={(e) => setMateriaId(e.target.value)}
                             className="form-input-materia"
                             style={{ cursor: 'pointer' }}
                             disabled={modoEdicion} 
                         >
-                            <option value="" disabled>Seleccione una materia (asignatura)</option>
-                            {dataAsignaturas.map((asignatura) => (
-                                <option key={asignatura.id} value={asignatura.id}>{asignatura.nombre}</option>
+                            <option value="" disabled>Seleccione una materia</option>
+                            {dataMaterias.map((materia) => (
+                                <option key={materia.id} value={materia.id}>{materia.nombre}</option>
                             ))}
                         </select>
                     </div>
 
                     <div className="form-group-materia">
-                        <label htmlFor="profesor">Profesor Asignado (Opcional)</label>
+                        <label htmlFor="profesor">Profesor Asignado</label>
                         <div className="custom-selector-wrapper">
                             <input
                                 type="text"
                                 id="profesor"
-                                value={busquedaProfesor || (profesorAsignadoId === null ? PROFESOR_NO_ASIGNADO : nombreCompletoProfesorActual)}
-                                
+                                value={busquedaProfesor || nombreCompletoProfesorActual}
                                 onChange={(e) => {
                                     setBusquedaProfesor(e.target.value);
                                     setProfesorAsignadoId(''); 
                                 }}
-                                placeholder="Buscar Profesor o seleccionar 'No Asignado'"
+                                placeholder="Buscar Profesor"
                                 className="form-input-materia profesor-input"
                                 autoComplete="off"
                             />
                             <i className="fas fa-search search-icon"></i>
-                            {(busquedaProfesor.length > 0 || !profesorAsignadoId) && (
+                            {busquedaProfesor.length > 0 && (
                                 <ul className="profesor-dropdown">
-                                    <li
-                                        onClick={handleNoAsignado}
-                                        className="dropdown-item dropdown-item-no-profesor"
-                                        style={{ fontWeight: 'bold', borderBottom: '1px solid #eee' }}
-                                    >
-                                        {PROFESOR_NO_ASIGNADO}
-                                    </li>
                                     {profesoresFiltrados.length > 0 ? (
                                         profesoresFiltrados.map((profesor) => (
                                             <li
@@ -190,11 +184,9 @@ const FormNuevaMateria = () => {
                                             </li>
                                         ))
                                     ) : (
-                                        busquedaProfesor.length > 0 && (
-                                            <li className="dropdown-item-disabled">
-                                                No se encontraron profesores.
-                                            </li>
-                                        )
+                                        <li className="dropdown-item-disabled">
+                                            No se encontraron profesores.
+                                        </li>
                                     )}
                                 </ul>
                             )}

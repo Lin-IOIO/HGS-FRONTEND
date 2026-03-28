@@ -14,6 +14,7 @@ import FormNuevaMateria from './paginas/Admin/FormNuevaMateria';
 import InicioCoordinador from './paginas/Coordinador/InicioCoordinador';
 import CargarPlanEstudio from './paginas/Coordinador/CargarPlanEstudio';
 import GestionMateriasCoordinador from './paginas/Coordinador/GestionMateriasCoordinador';
+import InicioProfesor from './paginas/Profesor/InicioProfesor';
 import { AlertaProvider } from 'contexto/alerta';
 
 const App = () => {
@@ -40,7 +41,6 @@ const RutasAdminYSecretario = () => {
             <Route path="cursos/:idCurso" element={<GestionMaterias />} />
             <Route path="materias/:idCurso/crear" element={<FormNuevaMateria />} />
             <Route path="materias/editar" element={<FormNuevaMateria />} />
-            <Route path="usuarios" element={<TableroAdmin vista="usuarios" />} />
             <Route path="/" element={<Navigate to="inicio" replace />} />
         </Routes>
     );
@@ -51,7 +51,16 @@ const RutasCoordinador = () => {
         <Routes>
             <Route path="inicio" element={<InicioCoordinador />} />
             <Route path="cursos/:idCurso" element={<GestionMateriasCoordinador />} />
-            <Route path="cursos/:idCurso/plan/:idMateria" element={<CargarPlanEstudio />} />
+            <Route path="cursos/:idCurso/plan/:idCursoMateria" element={<CargarPlanEstudio />} />
+            <Route path="/" element={<Navigate to="inicio" replace />} />
+        </Routes>
+    );
+};
+
+const RutasProfesor = () => {
+    return (
+        <Routes>
+            <Route path="inicio" element={<InicioProfesor />} />
             <Route path="/" element={<Navigate to="inicio" replace />} />
         </Routes>
     );
@@ -95,6 +104,16 @@ const RoutesContainer = () => {
                     <RutaProtegida rolesPermitidos={['coordinador']}>
                         <DisposicionPrincipal>
                             <RutasCoordinador />
+                        </DisposicionPrincipal>
+                    </RutaProtegida>
+                }
+            />
+            <Route
+                path="/profesor/*"
+                element={
+                    <RutaProtegida rolesPermitidos={['profesor']}>
+                        <DisposicionPrincipal>
+                            <RutasProfesor />
                         </DisposicionPrincipal>
                     </RutaProtegida>
                 }

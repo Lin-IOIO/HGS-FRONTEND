@@ -63,10 +63,34 @@
 
 .materia-info-footer {
     display: flex;
-    gap: calc(4px);
+    align-items: center;
+    justify-content: space-between;
     padding: 10px 20px;
     background-color: white;
     color: #666;
     font-size: 0.9em;
     text-align: left;
+}
+
+.materia-footer-left {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.plan-status {
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 4px 8px;
+    border-radius: 999px;
+}
+
+.plan-con {
+    color: #1f7a3f;
+    background: #e3f6ea;
+}
+
+.plan-sin {
+    color: #b45309;
+    background: #fff5e6;
 }

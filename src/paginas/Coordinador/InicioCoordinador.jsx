@@ -83,7 +83,7 @@ const InicioCoordinador = () => {
                             </div>
 
                             <div className="card-footer">
-                                <p>Materias asignadas: {curso.materias ? curso.materias.length : '0'}</p>
+                                <p>Materias asignadas: {curso.materias ?? 0}</p>
                             </div>
                         </div>
                     );

@@ -1,0 +1,29 @@
+.profesor-container {
+    padding: 20px;
+}
+
+.profesor-header {
+    margin-bottom: 20px;
+}
+
+.profesor-materias-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 15px;
+}
+
+.profesor-materia-card {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.materia-info h3 {
+    margin: 0 0 6px;
+}
+
+.plan-vacio {
+    color: #999;
+    font-style: italic;
+}

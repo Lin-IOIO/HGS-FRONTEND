@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
 
 const AuthContext = createContext();
 
@@ -15,8 +15,6 @@ export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isCheckingAuth, setIsCheckingAuth] = useState(true);
     const [token, setToken] = useState('');
-
-    const API_VALIDATE_TOKEN_URL = 'http://localhost:5000/api/middleware/verificarToken';
 
     const login = (userData) => {
         localStorage.setItem('authToken', userData.token);
@@ -47,32 +45,32 @@ export const AuthProvider = ({ children }) => {
 
     const validateToken = async () => {
         const token = localStorage.getItem('authToken');
-        if (token) {
-            try {
-                const response = await axios.get(API_VALIDATE_TOKEN_URL, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
+        if (!token) {
+            setIsCheckingAuth(false);
+            return;
+        }
 
-                if (response.status >= 200 && response.status < 300) {
-                    setUser({
-                        id: response.data.user.id,
-                        rol: response.data.user.rol,
-                        nombre: response.data.user.nombre,
-                        apellido: response.data.user.apellido,
-                        titulo: response.data.user.rol
-                    });
-                    setIsAuthenticated(true);
-                } else {
-                    localStorage.removeItem('authToken');
-                    logout();
-                }
-            } catch (error) {
-                console.error("Error al validar el token:", error);
-                localStorage.removeItem('authToken');
-                logout();
-            }
+        try {
+            const decoded = jwtDecode(token);
+            const data = decoded?.data || {};
+            const nombreCompleto = data.usuario || '';
+            const partes = nombreCompleto.trim().split(' ');
+            const nombre = partes.shift() || '';
+            const apellido = partes.join(' ').trim();
+
+            setToken(token);
+            setUser({
+                id: data.id ?? null,
+                rol: data.rol ?? null,
+                nombre,
+                apellido,
+                titulo: data.rol ?? null
+            });
+            setIsAuthenticated(true);
+        } catch (error) {
+            console.error("Error al decodificar el token:", error);
+            localStorage.removeItem('authToken');
+            logout();
         }
         setIsCheckingAuth(false);
     };
