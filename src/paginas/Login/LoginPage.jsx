@@ -52,8 +52,6 @@ export default function LoginPage() {
             const apellido = partes.join(' ').trim();
             const titulo = rol;
 
-            // CORREGIDO: login() en conAutenticacion ya maneja el localStorage internamente,
-            // no hace falta duplicar los setItem aquí
             login({
                 token,
                 user: { id, rol, nombre, apellido, titulo }
