@@ -2,7 +2,7 @@ import React, { useState, useEffect  } from 'react';
 import { API } from 'apis/constantes.js';
 import { useGet } from 'hooks/useGet.js';
 import { useDelete } from '../../hooks/useDelete';
-import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'wouter';
 import Boton from '../../componentes/UI/Boton';
 import './GestionUsuarios.css'; 
 
@@ -10,11 +10,11 @@ const GestionUsuarios = () => {
 
     const urlUsuarios = `${API}/usuarios`;
     const [dataUsuarios, loading, error] = useGet(urlUsuarios, []);
-    const { ejecutarEliminacion, cargando: eliminando, error: errorEliminar } = useDelete();
+    const { ejecutarEliminacion } = useDelete();
     const [usuarios, setUsuarios] = useState([]);
 
-    const navigate = useNavigate();
-    const [busqueda, setBusqueda] = useState('');
+    const [, setLocation] = useLocation();
+    const [busqueda] = useState('');
     const [modalAbierto, setModalAbierto] = useState(false);
     const [usuarioAEliminar, setUsuarioAEliminar] = useState(null);
     const [mensajeExito, setMensajeExito] = useState(false);
@@ -58,11 +58,11 @@ const GestionUsuarios = () => {
     };
 
     const handleAgregarUsuario = () => {
-        navigate('/admin/usuarios/crear');
+        setLocation('/admin/usuarios/crear');
     };
 
     const handleEditarUsuario = (usuario) => {
-        navigate('/admin/usuarios/editar', { state: { usuarioAEditar: usuario } });
+        setLocation(`/admin/usuarios/editar/${usuario.id}`);
     };
 
     const criterio = busqueda.toLowerCase();

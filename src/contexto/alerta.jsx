@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import Alerta from "componentes/UI/Alerta";
 import { createContext, useContext, useState } from "react";
 

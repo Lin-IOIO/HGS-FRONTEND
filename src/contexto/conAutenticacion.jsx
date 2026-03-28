@@ -1,4 +1,5 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+/* eslint-disable react-refresh/only-export-components */
+import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { jwtDecode } from 'jwt-decode';
 
 const AuthContext = createContext();
@@ -43,7 +44,7 @@ export const AuthProvider = ({ children }) => {
         setIsAuthenticated(false);
     };
 
-    const validateToken = async () => {
+    const validateToken = useCallback(async () => {
         const token = localStorage.getItem('authToken');
         if (!token) {
             setIsCheckingAuth(false);
@@ -73,11 +74,11 @@ export const AuthProvider = ({ children }) => {
             logout();
         }
         setIsCheckingAuth(false);
-    };
+    }, []);
 
     useEffect(() => {
         validateToken();
-    }, []);
+    }, [validateToken]);
 
     if (isCheckingAuth) {
         return <div style={{ padding: '20px', textAlign: 'center' }}>Verificando sesión...</div>;

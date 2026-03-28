@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'wouter';
 import { useAuth } from '../../contexto/conAutenticacion';
 import './LoginPage.css';
 import axios from 'axios';
@@ -32,7 +32,7 @@ export default function LoginPage() {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const navigate = useNavigate();
+    const [, setLocation] = useLocation();
     const { login } = useAuth();
 
     const handleLogin = async (e) => {
@@ -60,7 +60,7 @@ export default function LoginPage() {
             const redirectPath = ROLE_REDIRECTS[rol];
 
             if (redirectPath) {
-                navigate(redirectPath);
+                setLocation(redirectPath);
             } else {
                 setError(`Rol de usuario no reconocido: ${rol}`);
             }

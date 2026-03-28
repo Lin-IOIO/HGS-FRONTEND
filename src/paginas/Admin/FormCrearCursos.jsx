@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useLocation, useRoute } from 'wouter';
 import Boton from '../../componentes/UI/Boton.jsx';
 import Selector from '../../componentes/UI/Selector.jsx';
 import { API } from '../../apis/constantes.js';
 import { usePost } from '../../hooks/usePost.js';
 import { usePut } from '../../hooks/usePut.js';
+import { useGet } from '../../hooks/useGet.js';
 import { useAlerta } from '../../contexto/alerta.jsx';
 import './FormCrearCursos.css';
 
@@ -35,24 +36,37 @@ const opcionesTurno = [
 ];
 
 const FormCrearCursos = () => {
-    const navigate = useNavigate();
-    const { alerta } = useAlerta();
-    const location = useLocation();
+    const [, setLocation] = useLocation();
+    const [matchEditar, paramsEditar] = useRoute('/admin/cursos/editar/:idCurso');
+    const cursoId = paramsEditar?.idCurso;
+    const esEditando = Boolean(matchEditar && cursoId);
 
-    const cursoAEditar = location.state?.cursoAEditar;
+    const { alerta } = useAlerta();
 
     const { ejecutarPost, cargando: creando, error: errorPost } = usePost();
     const { ejecutarPut, cargando: editando, error: errorPut } = usePut();
 
-    const [formData, setFormData] = useState(cursoAEditar ? {
-        anio: cursoAEditar.anio_id,
-        division: cursoAEditar.division_id,
-        turno: cursoAEditar.turno_id,
-    } : {
+    const urlCursos = esEditando ? `${API}/cursos` : null;
+    const [cursos, cargandoCursos] = useGet(urlCursos, []);
+
+    const [formData, setFormData] = useState({
         anio: 1,
         division: 1,
         turno: 'Mañana',
     });
+
+    useEffect(() => {
+        if (esEditando && Array.isArray(cursos)) {
+            const cursoAEditar = cursos.find((c) => String(c.id) === String(cursoId));
+            if (cursoAEditar) {
+                setFormData({
+                    anio: cursoAEditar.anio_id,
+                    division: cursoAEditar.division_id,
+                    turno: cursoAEditar.turno_id,
+                });
+            }
+        }
+    }, [esEditando, cursos, cursoId]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -62,7 +76,6 @@ const FormCrearCursos = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const esEditando = !!cursoAEditar;
 
         const datosCurso = {
             anio: formData.anio,
@@ -75,7 +88,7 @@ const FormCrearCursos = () => {
         let mensajeExito;
 
         if (esEditando) {
-            url = `${API}/cursos/${cursoAEditar.id}`;
+            url = `${API}/cursos/${cursoId}`;
             ejecutarAccion = ejecutarPut;
             mensajeExito = `Curso ${formData.anio}º ${formData.division}ª modificado.`;
         } else {
@@ -89,7 +102,7 @@ const FormCrearCursos = () => {
             alerta({
                 titulo: esEditando ? "Cambios Guardados" : "Curso Creado",
                 descripcion: mensajeExito,
-                onClick: () => navigate('/admin/cursos'),
+                onClick: () => setLocation('/admin/cursos'),
             });
         } else {
             alerta({
@@ -100,8 +113,9 @@ const FormCrearCursos = () => {
     };
 
     const handleCancelar = () => {
-        navigate(-1);
+        window.history.back();
     };
+
     if ((errorPost || errorPut) && !alerta) {
         alerta({
             mensaje: 'Ocurrió un error inesperado al enviar los datos. Intente de nuevo.',
@@ -109,15 +123,18 @@ const FormCrearCursos = () => {
         });
     }
 
+    if (esEditando && cargandoCursos) {
+        return <div className="crear-curso-container"><p>Cargando curso...</p></div>;
+    }
+
     const isSaving = creando || editando;
-    const title = cursoAEditar ? 'Modificar Curso' : 'Nuevo Curso';
+    const title = esEditando ? 'Modificar Curso' : 'Nuevo Curso';
 
     return (
         <div className="crear-curso-container">
             <h1 className="titulo-formulario">{title}</h1>
 
             <form onSubmit={handleSubmit} className="curso-form-layout">
-
                 <div className="form-row-anio-division">
                     <Selector
                         label="Año"
@@ -166,6 +183,5 @@ const FormCrearCursos = () => {
         </div>
     );
 };
-
 
 export default FormCrearCursos;

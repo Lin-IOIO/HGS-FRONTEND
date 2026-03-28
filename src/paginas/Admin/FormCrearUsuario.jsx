@@ -1,11 +1,12 @@
-import React, { useState, useMemo } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import React, { useState, useMemo, useEffect } from 'react';
+import { useLocation, useRoute } from 'wouter';
 import Input from '../../componentes/UI/Input.jsx';
 import Selector from '../../componentes/UI/Selector.jsx';
 import Boton from '../../componentes/UI/Boton.jsx';
 import { API } from '../../apis/constantes.js';
 import { usePost } from '../../hooks/usePost.js';
 import { usePut } from '../../hooks/usePut.js';
+import { useGet } from '../../hooks/useGet.js';
 import Notificacion from '../../componentes/UI/Notificacion.jsx'; 
 import './FormCrearUsuario.css'; 
 
@@ -25,13 +26,21 @@ const initialData = {
 };
 
 const FormCrearUsuario = () => {
-    const navigate = useNavigate();
-    const location = useLocation();
+    const [, setLocation] = useLocation();
+    const [matchEditar, paramsEditar] = useRoute('/admin/usuarios/editar/:idUsuario');
+    const usuarioId = paramsEditar?.idUsuario;
+    const esEditando = Boolean(matchEditar && usuarioId);
 
     const { ejecutarPost, cargando: creando, error: errorPost } = usePost();
     const { ejecutarPut, cargando: editando, error: errorPut } = usePut();
 
-    const usuarioAEditar = location.state?.usuarioAEditar;
+    const urlUsuarios = esEditando ? `${API}/usuarios` : null;
+    const [usuarios, cargandoUsuarios] = useGet(urlUsuarios, []);
+
+    const usuarioAEditar = useMemo(() => {
+        if (!esEditando || !Array.isArray(usuarios)) return null;
+        return usuarios.find((u) => String(u.id) === String(usuarioId)) || null;
+    }, [esEditando, usuarios, usuarioId]);
 
     const datosIniciales = useMemo(() => {
         if (!usuarioAEditar) return initialData;
@@ -48,6 +57,10 @@ const FormCrearUsuario = () => {
     const [formData, setFormData] = useState(datosIniciales);
     const [notificacion, setNotificacion] = useState(null);  
 
+    useEffect(() => {
+        setFormData(datosIniciales);
+    }, [datosIniciales]);
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         const valorAjustado = name === 'id_rol' ? Number(value) : value;
@@ -57,7 +70,6 @@ const FormCrearUsuario = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const camposRequeridos = ['correo_electronico', 'nombre', 'apellido', 'DNI', 'contrasena', 'id_rol'];
-        const esEditando = !!usuarioAEditar;
 
         const camposIncompletos = camposRequeridos.some(key => !formData[key] || String(formData[key]).trim() === '');
         if (camposIncompletos) {
@@ -78,7 +90,7 @@ const FormCrearUsuario = () => {
         let mensajeExito;
 
         if (esEditando) {
-            url = `${API}/usuarios/${usuarioAEditar.id}`; 
+            url = `${API}/usuarios/${usuarioId}`; 
             ejecutarAccion = ejecutarPut;
             mensajeExito = `Usuario ${formData.nombre} modificado exitosamente.`;
         } else {
@@ -96,7 +108,7 @@ const FormCrearUsuario = () => {
                 tipo: 'exito' 
             });
             setTimeout(() => {
-                navigate('/admin/usuarios'); 
+                setLocation('/admin/usuarios'); 
             }, 1500);
 
         } else {
@@ -118,6 +130,10 @@ const FormCrearUsuario = () => {
             tipo: 'error' 
         });
     }
+
+    if (esEditando && cargandoUsuarios) {
+        return <div className="creacion-usuarios-container"><p>Cargando usuario...</p></div>;
+    }
     
     const isSaving = creando || editando; 
 
@@ -132,7 +148,7 @@ const FormCrearUsuario = () => {
             )}
 
             <div className="creacion-usuarios-container">
-                <h1>{usuarioAEditar ? 'Modificar Usuario' : 'Nuevo Usuario'}</h1>
+                <h1>{esEditando ? 'Modificar Usuario' : 'Nuevo Usuario'}</h1>
                 
                 <form onSubmit={handleSubmit} className="usuario-form-layout">
                     <Input label="Email" name="correo_electronico" value={formData.correo_electronico} onChange={handleChange} placeholder="Email" required={true}/>
@@ -140,7 +156,6 @@ const FormCrearUsuario = () => {
                     <Input label="Apellido" name="apellido" value={formData.apellido} onChange={handleChange} placeholder="Apellido" required={true}/>
                     <Input label="Contraseña" name="contrasena" value={formData.contrasena} onChange={handleChange} placeholder="Contraseña" required={true}/>
 
-                  
                     <div className="form-row-dni-tipo">
                         <Input label="DNI" name="DNI" type="number" value={formData.DNI} onChange={handleChange} placeholder="DNI" required={true}/>
                         
@@ -155,7 +170,7 @@ const FormCrearUsuario = () => {
                     </div>
                     <div className="form-action-area">
                        <Boton type="submit" className='ui-boton-principal' disabled={isSaving}>
-                            {isSaving ? 'Guardando...' : (usuarioAEditar ? 'Guardar Cambios' : 'Guardar')}
+                            {isSaving ? 'Guardando...' : (esEditando ? 'Guardar Cambios' : 'Guardar')}
                         </Boton>
                     </div>
                 </form>

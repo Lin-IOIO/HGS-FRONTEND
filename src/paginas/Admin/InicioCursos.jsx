@@ -3,7 +3,7 @@ import { API } from 'apis/constantes.js';
 import { useGet } from 'hooks/useGet.js';
 import { useDelete } from 'hooks/useDelete.js';
 import { useAlerta } from '../../contexto/alerta';
-import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'wouter';
 import { useState, useEffect } from 'react';
 import Boton from '../../componentes/UI/Boton';
 
@@ -14,7 +14,7 @@ const InicioCursos = () => {
     const [dataCursos, loading, error] = useGet(urlCursos, []); 
     console.log()
     
-    const navigate = useNavigate();
+    const [, setLocation] = useLocation();
     const { alerta } = useAlerta();
     const { ejecutarEliminacion, cargando: eliminando, error: errorEliminar } = useDelete();
 
@@ -29,13 +29,13 @@ const InicioCursos = () => {
     }, [dataCursos]);
     
     const handleCardClick = (curso) => {
-        navigate(`/admin/cursos/${curso.id}`);
+        setLocation(`/admin/cursos/${curso.id}`);
         
     };
 
     const handleEditar = (e, curso) => {
         e.stopPropagation();
-        navigate('/admin/cursos/crear', { state: { cursoAEditar: curso } });
+        setLocation(`/admin/cursos/editar/${curso.id}`);
     };
 
     const handleEliminar = (e, curso) => {
@@ -75,7 +75,7 @@ const InicioCursos = () => {
     };
 
     const handleCrearCurso = () => {
-        navigate('crear');
+        setLocation('/admin/cursos/crear');
     };
 
     const cursosFiltrados = filtroTurno
@@ -120,7 +120,7 @@ const InicioCursos = () => {
                     onClick={handleCrearCurso}
                     className="ui-boton-principal"
                 >
-                    <i className="fas fa-plus"></i>  Nuevo Curso
+                    <i className="fas fa-plus"></i> Nuevo Curso
                 </Boton>
             </header>
 

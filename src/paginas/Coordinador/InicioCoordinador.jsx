@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { API } from 'apis/constantes.js'; 
 import { useGet } from 'hooks/useGet.js'; 
-import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'wouter';
 import './InicioCoordinador.css'; 
 
 const colores = ['#ff7f7f', '#f8c07f', '#7fdbff', '#7fffbf', '#d27fff', '#ff7fe1']
 
 const InicioCoordinador = () => {
-    const navigate = useNavigate();
+    const [, setLocation] = useLocation();
     
     const urlCursos = `${API}/cursos`;
     const [dataCursos, loading, error] = useGet(urlCursos, []); 
@@ -22,7 +22,7 @@ const InicioCoordinador = () => {
     }, [dataCursos]);
     
     const handleVerMaterias = (cursoId) => {
-        navigate(`/coordinador/cursos/${cursoId}`);
+        setLocation(`/coordinador/cursos/${cursoId}`);
     };
 
     const cursosFiltrados = filtroTurno

@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useEffect } from 'react';
-import { useParams, useLocation, useNavigate } from 'react-router-dom';
+import { useRoute } from 'wouter';
 import { API } from '../../apis/constantes.js';
 import { useGet } from '../../hooks/useGet.js';
 import { usePost } from '../../hooks/usePost.js';
@@ -9,15 +9,23 @@ import Boton from '../../componentes/UI/Boton.jsx';
 import './CargarPlanEstudio.css';
 
 const CargarPlanEstudio = () => {
-    const { idCurso, idCursoMateria } = useParams();
-    const navigate = useNavigate();
-    const location = useLocation();
+    const [, params] = useRoute('/coordinador/cursos/:idCurso/plan/:idCursoMateria');
+    const idCurso = params?.idCurso;
+    const idCursoMateria = params?.idCursoMateria;
     const { user } = useAuth();
-
-    const nombreMateria = location.state?.nombreMateria || "Materia";
 
     const urlPlanes = `${API}/planes`;
     const [planes, loadingPlanes, errorPlanes] = useGet(urlPlanes, []);
+
+    const urlCursoMaterias = `${API}/curso-materias`;
+    const [cursoMaterias, loadingCursoMaterias] = useGet(urlCursoMaterias, []);
+
+    const cursoMateriaActual = useMemo(() => {
+        if (!Array.isArray(cursoMaterias)) return null;
+        return cursoMaterias.find((cm) => String(cm.id) === String(idCursoMateria)) || null;
+    }, [cursoMaterias, idCursoMateria]);
+
+    const nombreMateria = cursoMateriaActual?.materia_nombre || "Materia";
 
     const planExistente = useMemo(() => {
         if (!Array.isArray(planes)) return null;
@@ -43,13 +51,11 @@ const CargarPlanEstudio = () => {
             return cleaned;
         }
 
-        // Formato: https://drive.google.com/file/d/<ID>/view?...
         const fileMatch = cleaned.match(/\/file\/d\/([^/]+)/i);
         if (fileMatch && fileMatch[1]) {
             return `https://drive.google.com/uc?export=download&id=${fileMatch[1]}`;
         }
 
-        // Formato: https://drive.google.com/open?id=<ID>
         const openMatch = cleaned.match(/[?&]id=([^&]+)/i);
         if (openMatch && openMatch[1]) {
             return `https://drive.google.com/uc?export=download&id=${openMatch[1]}`;
@@ -77,11 +83,11 @@ const CargarPlanEstudio = () => {
         }
 
         if (resultado.exito) {
-            navigate(-1);
+            window.history.back();
         }
     };
 
-    if (loadingPlanes) {
+    if (loadingPlanes || loadingCursoMaterias) {
         return <div className="cargar-plan-container"><p>Cargando...</p></div>;
     }
 

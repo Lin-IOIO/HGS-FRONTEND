@@ -1,14 +1,14 @@
 import React, { useMemo } from 'react';
-import { useParams } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useRoute } from 'wouter';
 import { API } from 'apis/constantes.js';
 import { useGet } from 'hooks/useGet.js';
 import Boton from '../../componentes/UI/Boton.jsx'; 
 import './GestionMateriasCoordinador.css';
 
 const GestionMateriasCoordinador = () => {
-    const { idCurso } = useParams();
-    const navigate = useNavigate();
+    const [, params] = useRoute('/coordinador/cursos/:idCurso');
+    const idCurso = params?.idCurso;
+    const [, setLocation] = useLocation();
 
     const urlCursoMaterias = `${API}/curso-materias`;
     const urlPlanes = `${API}/planes`;
@@ -44,13 +44,7 @@ const GestionMateriasCoordinador = () => {
     }, [cursoMaterias, idCurso]);
 
     const handleGestionarPlan = (materia) => {
-        navigate(`/coordinador/cursos/${idCurso}/plan/${materia.id}`, {
-            state: { 
-                nombreMateria: materia.materia_nombre,
-                cursoMateriaId: materia.id,
-                planExistente: planesPorCursoMateria.get(materia.id) || null
-            }
-        });
+        setLocation(`/coordinador/cursos/${idCurso}/plan/${materia.id}`);
     };
 
     const handleDescargarPlan = (plan) => {

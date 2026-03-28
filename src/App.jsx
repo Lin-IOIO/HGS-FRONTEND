@@ -1,5 +1,5 @@
 import './App.css';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'wouter';
 import { AuthProvider, useAuth } from './contexto/conAutenticacion';
 import LoginPage from './paginas/Login/LoginPage';
 import RutaProtegida from './componentes/Enrutamiento/RutaProtegida';
@@ -19,107 +19,136 @@ import { AlertaProvider } from 'contexto/alerta';
 
 const App = () => {
     return (
-        <Router>
-            <AuthProvider>
-                <AlertaProvider>
-                    <RoutesContainer />
-                </AlertaProvider>
-            </AuthProvider>
-        </Router>
-    );
-};
-
-const RutasAdminYSecretario = () => {
-    return (
-        <Routes>
-            <Route path="inicio" element={<TableroAdmin vista="inicio" />} />
-            <Route path="cursos" element={<TableroAdmin vista="cursos" />} />
-            <Route path="usuarios" element={<GestionUsuarios />} />
-            <Route path="usuarios/crear" element={<FormCrearUsuario />} />
-            <Route path="usuarios/editar" element={<FormCrearUsuario />} />
-            <Route path="cursos/crear" element={<FormCrearCursos />} />
-            <Route path="cursos/:idCurso" element={<GestionMaterias />} />
-            <Route path="materias/:idCurso/crear" element={<FormNuevaMateria />} />
-            <Route path="materias/editar" element={<FormNuevaMateria />} />
-            <Route path="/" element={<Navigate to="inicio" replace />} />
-        </Routes>
-    );
-};
-
-const RutasCoordinador = () => {
-    return (
-        <Routes>
-            <Route path="inicio" element={<InicioCoordinador />} />
-            <Route path="cursos/:idCurso" element={<GestionMateriasCoordinador />} />
-            <Route path="cursos/:idCurso/plan/:idCursoMateria" element={<CargarPlanEstudio />} />
-            <Route path="/" element={<Navigate to="inicio" replace />} />
-        </Routes>
-    );
-};
-
-const RutasProfesor = () => {
-    return (
-        <Routes>
-            <Route path="inicio" element={<InicioProfesor />} />
-            <Route path="/" element={<Navigate to="inicio" replace />} />
-        </Routes>
+        <AuthProvider>
+            <AlertaProvider>
+                <RoutesContainer />
+            </AlertaProvider>
+        </AuthProvider>
     );
 };
 
 const RoutesContainer = () => {
     const { isAuthenticated, user } = useAuth();
 
-    let redirectPath = '/login';
-
-    if (isAuthenticated && user && user.rol) {
-        redirectPath = `/${user.rol}/inicio`;
-    }
+    const redirectPath = isAuthenticated && user?.rol ? `/${user.rol}/inicio` : '/login';
 
     return (
-        <Routes>
-            <Route
-                path="/login"
-                element={
-                    isAuthenticated && user?.rol ? (
-                        <Navigate to={redirectPath} replace />
-                    ) : (
-                        <LoginPage />
-                    )
-                }
-            />
-            <Route path="/" element={<Navigate to={redirectPath} replace />} />
-            <Route
-                path="/admin/*"
-                element={
-                    <RutaProtegida rolesPermitidos={['admin']}>
-                        <DisposicionPrincipal>
-                            <RutasAdminYSecretario />
-                        </DisposicionPrincipal>
-                    </RutaProtegida>
-                }
-            />
-            <Route
-                path="/coordinador/*"
-                element={
-                    <RutaProtegida rolesPermitidos={['coordinador']}>
-                        <DisposicionPrincipal>
-                            <RutasCoordinador />
-                        </DisposicionPrincipal>
-                    </RutaProtegida>
-                }
-            />
-            <Route
-                path="/profesor/*"
-                element={
-                    <RutaProtegida rolesPermitidos={['profesor']}>
-                        <DisposicionPrincipal>
-                            <RutasProfesor />
-                        </DisposicionPrincipal>
-                    </RutaProtegida>
-                }
-            />
-            <Route path="*" element={<Navigate to="/login" replace />} />
-        </Routes>
+        <Switch>
+            <Route path="/login">
+                {isAuthenticated && user?.rol ? <Redirect to={redirectPath} /> : <LoginPage />}
+            </Route>
+
+            <Route path="/">
+                <Redirect to={redirectPath} />
+            </Route>
+
+            <Route path="/admin/inicio">
+                <RutaProtegida rolesPermitidos={['admin']}>
+                    <DisposicionPrincipal>
+                        <TableroAdmin vista="inicio" />
+                    </DisposicionPrincipal>
+                </RutaProtegida>
+            </Route>
+            <Route path="/admin/cursos">
+                <RutaProtegida rolesPermitidos={['admin']}>
+                    <DisposicionPrincipal>
+                        <TableroAdmin vista="cursos" />
+                    </DisposicionPrincipal>
+                </RutaProtegida>
+            </Route>
+            <Route path="/admin/cursos/crear">
+                <RutaProtegida rolesPermitidos={['admin']}>
+                    <DisposicionPrincipal>
+                        <FormCrearCursos />
+                    </DisposicionPrincipal>
+                </RutaProtegida>
+            </Route>
+            <Route path="/admin/cursos/editar/:idCurso">
+                <RutaProtegida rolesPermitidos={['admin']}>
+                    <DisposicionPrincipal>
+                        <FormCrearCursos />
+                    </DisposicionPrincipal>
+                </RutaProtegida>
+            </Route>
+            <Route path="/admin/cursos/:idCurso">
+                <RutaProtegida rolesPermitidos={['admin']}>
+                    <DisposicionPrincipal>
+                        <GestionMaterias />
+                    </DisposicionPrincipal>
+                </RutaProtegida>
+            </Route>
+
+            <Route path="/admin/usuarios">
+                <RutaProtegida rolesPermitidos={['admin']}>
+                    <DisposicionPrincipal>
+                        <GestionUsuarios />
+                    </DisposicionPrincipal>
+                </RutaProtegida>
+            </Route>
+            <Route path="/admin/usuarios/crear">
+                <RutaProtegida rolesPermitidos={['admin']}>
+                    <DisposicionPrincipal>
+                        <FormCrearUsuario />
+                    </DisposicionPrincipal>
+                </RutaProtegida>
+            </Route>
+            <Route path="/admin/usuarios/editar/:idUsuario">
+                <RutaProtegida rolesPermitidos={['admin']}>
+                    <DisposicionPrincipal>
+                        <FormCrearUsuario />
+                    </DisposicionPrincipal>
+                </RutaProtegida>
+            </Route>
+
+            <Route path="/admin/materias/:idCurso/crear">
+                <RutaProtegida rolesPermitidos={['admin']}>
+                    <DisposicionPrincipal>
+                        <FormNuevaMateria />
+                    </DisposicionPrincipal>
+                </RutaProtegida>
+            </Route>
+            <Route path="/admin/materias/editar/:idCursoMateria">
+                <RutaProtegida rolesPermitidos={['admin']}>
+                    <DisposicionPrincipal>
+                        <FormNuevaMateria />
+                    </DisposicionPrincipal>
+                </RutaProtegida>
+            </Route>
+
+            <Route path="/coordinador/inicio">
+                <RutaProtegida rolesPermitidos={['coordinador']}>
+                    <DisposicionPrincipal>
+                        <InicioCoordinador />
+                    </DisposicionPrincipal>
+                </RutaProtegida>
+            </Route>
+            <Route path="/coordinador/cursos/:idCurso">
+                <RutaProtegida rolesPermitidos={['coordinador']}>
+                    <DisposicionPrincipal>
+                        <GestionMateriasCoordinador />
+                    </DisposicionPrincipal>
+                </RutaProtegida>
+            </Route>
+            <Route path="/coordinador/cursos/:idCurso/plan/:idCursoMateria">
+                <RutaProtegida rolesPermitidos={['coordinador']}>
+                    <DisposicionPrincipal>
+                        <CargarPlanEstudio />
+                    </DisposicionPrincipal>
+                </RutaProtegida>
+            </Route>
+
+            <Route path="/profesor/inicio">
+                <RutaProtegida rolesPermitidos={['profesor']}>
+                    <DisposicionPrincipal>
+                        <InicioProfesor />
+                    </DisposicionPrincipal>
+                </RutaProtegida>
+            </Route>
+
+            <Route path="/:rest*">
+                <Redirect to="/login" />
+            </Route>
+        </Switch>
     );
 };
 

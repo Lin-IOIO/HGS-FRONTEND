@@ -1,6 +1,6 @@
 import React from 'react';
 import { useEffect, useMemo, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useLocation, useRoute } from 'wouter';
 import { API } from 'apis/constantes.js';
 import { useGet } from 'hooks/useGet.js';
 import { useDelete } from '../../hooks/useDelete';
@@ -10,8 +10,9 @@ import './GestionMaterias.css';
 const colores = ['#ff7f7f', '#f8c07f', '#7fdbff', '#7fffbf', '#d27fff', '#ff7fe1'];
 
 const GestionMaterias = () => {
-    const { idCurso } = useParams();
-    const navigate = useNavigate();
+    const [, params] = useRoute('/admin/cursos/:idCurso');
+    const idCurso = params?.idCurso;
+    const [, setLocation] = useLocation();
 
     const urlCursoMaterias = `${API}/curso-materias`;
     const urlProfesores = `${API}/usuarios/profesores`;
@@ -56,11 +57,11 @@ const GestionMaterias = () => {
     }, [cursoMaterias, idCurso]);
 
     const handleCrearMateria = () => {
-        navigate(`/admin/materias/${idCurso}/crear`);
+        setLocation(`/admin/materias/${idCurso}/crear`);
     };
 
     const handleModificarMateria = (materia) => {
-        navigate('/admin/materias/editar', { state: { materiaAEditar: materia, cursoId: idCurso } });
+        setLocation(`/admin/materias/editar/${materia.id}`);
     };
 
     const handleMostrarConfirmacion = (materia) => {

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation, useParams } from 'react-router-dom';
+import React, { useState, useEffect, useMemo } from 'react';
+import { useRoute } from 'wouter';
 import { API } from '../../apis/constantes.js';
 import { usePost } from '../../hooks/usePost.js';
 import { usePut } from '../../hooks/usePut.js';
@@ -9,9 +9,12 @@ import './FormNuevaMateria.css';
 import Notificacion from '../../componentes/UI/Notificacion.jsx';
 
 const FormNuevaMateria = () => {
-    const navigate = useNavigate();
-    const location = useLocation();
-    const { idCurso } = useParams();
+    const [, paramsCrear] = useRoute('/admin/materias/:idCurso/crear');
+    const [matchEditar, paramsEditar] = useRoute('/admin/materias/editar/:idCursoMateria');
+
+    const idCurso = paramsCrear?.idCurso;
+    const idCursoMateria = paramsEditar?.idCursoMateria;
+    const modoEdicion = Boolean(matchEditar && idCursoMateria);
 
     const urlMaterias = `${API}/materias`;
     const [dataMaterias, loadingMaterias, errorMaterias] = useGet(urlMaterias, []);
@@ -19,16 +22,28 @@ const FormNuevaMateria = () => {
     const urlProfesores = `${API}/usuarios/profesores`; 
     const [dataProfesores, loadingProfesores, errorProfesores] = useGet(urlProfesores, []);
 
+    const urlCursoMaterias = modoEdicion ? `${API}/curso-materias` : null;
+    const [cursoMaterias, loadingCursoMaterias] = useGet(urlCursoMaterias, []);
+
+    const materiaAEditar = useMemo(() => {
+        if (!modoEdicion || !Array.isArray(cursoMaterias)) return null;
+        return cursoMaterias.find((cm) => String(cm.id) === String(idCursoMateria)) || null;
+    }, [modoEdicion, cursoMaterias, idCursoMateria]);
+
     const { ejecutarPost, cargando: creando, error: errorCrear } = usePost();
     const { ejecutarPut, cargando: actualizando, error: errorActualizar } = usePut();
-
-    const materiaAEditar = location.state?.materiaAEditar; 
-    const modoEdicion = !!materiaAEditar;
 
     const [materiaId, setMateriaId] = useState(materiaAEditar?.id_materia || '');
     const [profesorAsignadoId, setProfesorAsignadoId] = useState(materiaAEditar?.id_profesor || ''); 
     const [busquedaProfesor, setBusquedaProfesor] = useState('');
     const [notificacion, setNotificacion] = useState(null);
+
+    useEffect(() => {
+        if (materiaAEditar) {
+            setMateriaId(materiaAEditar.id_materia || '');
+            setProfesorAsignadoId(materiaAEditar.id_profesor || '');
+        }
+    }, [materiaAEditar]);
 
     const profesoresFiltrados = dataProfesores?.filter((profesor) => {
         const nombreCompleto = `${profesor.nombre} ${profesor.apellido}`.toLowerCase();
@@ -43,7 +58,7 @@ const FormNuevaMateria = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const cursoIdFinal = Number(idCurso || location.state?.cursoId || materiaAEditar?.id_curso);
+        const cursoIdFinal = Number(idCurso || materiaAEditar?.id_curso);
         if (!cursoIdFinal) {
             setNotificacion({
                 mensaje: 'No se pudo determinar el curso.',
@@ -79,7 +94,7 @@ const FormNuevaMateria = () => {
         let mensajeError = '';
 
         if (modoEdicion) {
-            const url = `${API}/curso-materias/${materiaAEditar.id}`; 
+            const url = `${API}/curso-materias/${idCursoMateria}`; 
             exito = await ejecutarPut(url, datosMateria);
             mensajeExito = 'Materia modificada exitosamente.';
             mensajeError = errorActualizar?.message || 'Error al actualizar la materia.';
@@ -93,7 +108,7 @@ const FormNuevaMateria = () => {
         if (exito) {
             setNotificacion({ mensaje: mensajeExito, tipo: 'exito' });
             setTimeout(() => {
-                navigate(-1);
+                window.history.back();
             }, 800);
         } else {
             setNotificacion({ mensaje: mensajeError, tipo: 'error' });
@@ -106,10 +121,10 @@ const FormNuevaMateria = () => {
     };
     
     const handleCancelar = () => {
-        navigate(-1); 
+        window.history.back(); 
     };
 
-    if (loadingMaterias || loadingProfesores || creando || actualizando) {
+    if (loadingMaterias || loadingProfesores || creando || actualizando || (modoEdicion && loadingCursoMaterias)) {
         return <div className="nueva-materia-container"><p>Cargando datos...</p></div>;
     }
 

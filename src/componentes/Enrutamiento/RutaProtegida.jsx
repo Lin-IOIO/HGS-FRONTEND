@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navigate } from 'react-router-dom';
+import { Redirect } from 'wouter';
 import { useAuth } from '../../contexto/conAutenticacion';
 
 const RutaProtegida = ({ children, rolesPermitidos }) => {
@@ -7,8 +7,8 @@ const RutaProtegida = ({ children, rolesPermitidos }) => {
     if (isCheckingAuth) {
         return <div>Cargando autenticación...</div>;
     }
-    if (!user) {
-        return <Navigate to="/login" replace />;
+    if (!user || !user.rol) {
+        return <Redirect to="/login" />;
     }
 
     if (rolesPermitidos && !rolesPermitidos.includes(user.rol)) {
@@ -20,7 +20,7 @@ const RutaProtegida = ({ children, rolesPermitidos }) => {
         };
 
         const rutaInicio = rutasDeInicio[user.rol] || rutasDeInicio['default'];
-        return <Navigate to={rutaInicio} replace />;
+        return <Redirect to={rutaInicio} />;
     }
     return children;
 };
