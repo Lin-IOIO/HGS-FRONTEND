@@ -14,10 +14,10 @@ export function useGet(url, initial) {
                 setDatos(datos);
                 setCargando(false);
                 setError(false);
-            }).catch(() => {
-                setError(true);
-                setCargando(false);
-            })
+            }).catch((err) => {
+               setError(err?.message || 'Error al cargar los datos.');
+               setCargando(false);
+           })
         }
     }, [token, url]);
 

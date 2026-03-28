@@ -24,8 +24,7 @@ const loginUser = async (dni, password) => {
 const ROLE_REDIRECTS = {
     'coordinador': '/coordinador/inicio',
     'docente': '/docente/inicio',
-    'admin': '/admin/inicio',
-    'secretario': '/admin/inicio',
+    'admin': '/admin/inicio'
 };
 
 export default function LoginPage() {
@@ -51,8 +50,6 @@ export default function LoginPage() {
             const apellido = decode.data.apellido;
             const titulo = decode.data.titulo;
 
-            // CORREGIDO: login() en conAutenticacion ya maneja el localStorage internamente,
-            // no hace falta duplicar los setItem aquí
             login({
                 token,
                 user: { id, rol, nombre, apellido, titulo }
