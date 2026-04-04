@@ -1,39 +1,21 @@
-/* 1. Contenedor Principal */
 .layout-container {
-    display: flex; /* Usamos Flex en lugar de Grid para mayor control */
+    display: flex; 
     width: 100vw;
     height: 100vh;
-    overflow: hidden; /* Evita scrollbars dobles en la ventana principal */
+    overflow: hidden; 
 }
-
-/* NOTA: Tu componente <BarraLateral /> ya tiene width: 100px en su propio CSS.
-   Al usar display: flex aquí, se respetará ese ancho automáticamente. */
-
-
-/* 2. Envoltura del contenido principal (Lado derecho) */
 .main-content-wrapper {
-    flex: 1; /* Ocupa todo el espacio restante (Ancho total - 100px del sidebar) */
+    flex: 1; 
     display: flex;
     flex-direction: column;
-    position: relative; /* Necesario para el contexto de apilamiento */
-    background-color: #f4f6f9; /* Color de fondo general suave */
-    
-    /* IMPORTANTE: Esto permite que el scroll ocurra SOLO en el contenido
-       y no mueva el sidebar ni el header */
+    position: relative;
+    background-color: #f4f6f9; 
     height: 100vh; 
     overflow-y: auto; 
 }
 
-/* 3. Área donde se renderiza el contenido (El formulario/tarjetas) */
 .main-content-area {
-    /* CRUCIAL: Empujamos el contenido hacia abajo.
-       70px es la altura que le dimos al Header en el paso anterior.
-       Le sumamos 30px extra para que respire. Total: 100px */
     margin-top: 70px; 
-    
     padding: 30px;
     flex-grow: 1;
-    
-    /* Opcional: Fondo blanco para el área de trabajo */
-    /* background-color: #ffffff; */ 
 }
